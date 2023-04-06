@@ -8,7 +8,7 @@ The full description can be found here: https://github.com/check24-scholarships/
 
 The application is composed of several subsystems, each responsible for managing a different aspect of the platform. The overall structure of the system is illustrated in the following component diagram:
 
-![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/main/rsc/structure%20holiday%20challenge.png)
+![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/master/rsc/structure%20holiday%20challenge.png)
 
 ### Frontend
 The frontend is responsible for providing a graphical user interface that allows users to interact with the platform.
