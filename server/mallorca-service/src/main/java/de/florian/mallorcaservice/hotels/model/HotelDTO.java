@@ -10,4 +10,5 @@ public class HotelDTO {
     private String hotelName;
     private URI image;
     private Integer hotelStars;
+    private Double min_price;
 }

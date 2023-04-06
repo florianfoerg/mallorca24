@@ -11,15 +11,5 @@ public class HotelService {
 
     private HotelRepository hotelRepository;
 
-    public void addHotel(String name, Integer stars, String image, String mail, Integer minStayDuration){
-        Hotel newHotel = new Hotel();
 
-        newHotel.setHotelName(name);
-        newHotel.setHotelStars(stars);
-        newHotel.setImage(image);
-        newHotel.setMinStayDuration(minStayDuration);
-        newHotel.setMail(mail);
-
-        hotelRepository.save(newHotel);
-    }
 }
