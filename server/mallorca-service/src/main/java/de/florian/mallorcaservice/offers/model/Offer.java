@@ -24,7 +24,7 @@ public class Offer {
     private Hotel hotel;
 
     @NotNull
-    private LocalDateTime outboundDepartureDateTime;
+    private LocalDateTime inboundArrivalDateTime;
 
     @NotNull
     private LocalDateTime inboundDepartureDateTime;
@@ -40,7 +40,7 @@ public class Offer {
     private Airport inboundDepartureAirport;
 
     @NotNull
-    private Airport inboundArrivalAirport;
+    private Airport outboundDepartureAirport;
 
     private Mealtype mealtype;
     private Boolean oceanview;

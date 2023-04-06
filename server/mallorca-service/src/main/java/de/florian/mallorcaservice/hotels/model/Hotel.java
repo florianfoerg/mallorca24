@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.net.URI;
-
 @Entity
 @Data
 @NoArgsConstructor

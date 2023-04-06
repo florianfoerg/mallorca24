@@ -45,7 +45,7 @@ for row in reader:
     # construct the SQL query to insert a new tuple into the hotels table
     sql = "INSERT INTO hotel (hotel_id, hotel_name, hotel_stars, image, mail, min_stay_duration) VALUES (%s, %s, %s, %s, %s, %s)"
     # execute the SQL query with the values from the current row
-    mycursor.execute(sql, (hotel_id, hotel_name, hotel_stars, hotel_image, "mail@hotel.com", 1)) # added missing email and is_active values
+    mycursor.execute(sql, (hotel_id, hotel_name, hotel_stars, hotel_image, "mail@hotel.com", 1))
     # commit the changes to the database
     mydb.commit()
 

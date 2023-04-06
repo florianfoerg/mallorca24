@@ -2,3 +2,4 @@
 .idea
 .gradle
 application.properties
+initialize_hotels_db.py

@@ -14,6 +14,7 @@ import java.util.List;
 public class CustomerController {
 
     private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<Customer>> getAllCustomers() {
@@ -23,14 +24,8 @@ public class CustomerController {
 
     @PostMapping(value = "/new")
     public ResponseEntity<Void> addNewCustomer(@RequestBody String mail) {
-        if(customerRepository.findAll().stream().map(Customer::getMail).toList().contains(mail)) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        Customer newCostumer = new Customer();
-        newCostumer.setMail(mail);
-
-        customerRepository.save(newCostumer);
+        customerService.addCostumer(mail);
 
         return ResponseEntity.ok().build();
     }
