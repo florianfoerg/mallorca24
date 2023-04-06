@@ -24,7 +24,7 @@ public class Hotel {
 
     private String mail;
 
-    private URI image;
+    private String image;
 
     @Column(columnDefinition = "INTEGER DEFAULT 1")
     private Integer minStayDuration;
