@@ -24,9 +24,7 @@ public class CustomerController {
 
     @PostMapping(value = "/new")
     public ResponseEntity<Void> addNewCustomer(@RequestBody String mail) {
-
         customerService.addCostumer(mail);
-
         return ResponseEntity.ok().build();
     }
 }

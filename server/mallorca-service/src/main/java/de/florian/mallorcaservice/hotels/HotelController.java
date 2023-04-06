@@ -17,17 +17,17 @@ public class HotelController {
     private HotelService hotelService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Hotel>> getAllCustomers() {
+    public ResponseEntity<List<Hotel>> getAllHotels() {
         List<Hotel> hotels = hotelRepository.findAll();
         return ResponseEntity.ok(hotels);
     }
 
     @PostMapping(value = "/new")
-    public ResponseEntity<Void> addNewCustomer(@RequestBody String name,
-                                               @RequestBody Integer stars,
-                                               @RequestBody String image,
-                                               @RequestBody String mail,
-                                               @RequestBody Integer minStayDuration) {
+    public ResponseEntity<Void> addNewHotel(@RequestBody String name,
+                                            @RequestBody Integer stars,
+                                            @RequestBody String image,
+                                            @RequestBody String mail,
+                                            @RequestBody Integer minStayDuration) {
 
         hotelService.addHotel(name, stars, image, mail, minStayDuration);
 

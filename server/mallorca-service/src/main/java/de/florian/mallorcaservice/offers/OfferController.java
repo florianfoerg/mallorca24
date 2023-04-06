@@ -1,13 +1,14 @@
 package de.florian.mallorcaservice.offers;
 
 import de.florian.mallorcaservice.offers.model.*;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/offers")
 public class OfferController {
@@ -16,27 +17,20 @@ public class OfferController {
     private OfferService offerService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Offer>> getAllCustomers() {
-        List<Offer> hotels = offerRepository.findAll();
-        return ResponseEntity.ok(hotels);
+    public ResponseEntity<List<Offer>> getAllOffers() {
+        List<Offer> offers = offerRepository.findAll();
+        return ResponseEntity.ok(offers);
     }
 
     @PostMapping(value = "/new")
-    public ResponseEntity<Void> addNewCustomer(@RequestBody Integer countAdults,
-                                               @RequestBody Integer countChildren,
-                                               @RequestBody LocalDateTime inboundDepartureDateTime,
-                                               @RequestBody LocalDateTime inboundArrivalDateTime,
-                                               @RequestBody Double price,
-                                               @RequestBody Long hotelId,
-                                               @RequestBody Airport outboundDepartureAirport,
-                                               @RequestBody Airport inboundDepartureAirport,
-                                               @RequestBody Mealtype mealtype,
-                                               @RequestBody Boolean oceanview,
-                                               @RequestBody Roomtype roomtype
-    ) {
+    public ResponseEntity<Void> createNewOffer(@RequestBody Offer offer, @RequestParam Long hotelId) {
+        offerService.createNewOffer(offer, hotelId);
+        return ResponseEntity.ok().build();
+    }
 
-        offerService.createNewOffer(countAdults, countChildren, inboundDepartureDateTime, inboundArrivalDateTime, price, hotelId, outboundDepartureAirport, inboundDepartureAirport, mealtype, oceanview, roomtype);
-
+    @DeleteMapping(value = "/offer/{id}")
+    public ResponseEntity<Void> removeOffer(@PathVariable("id") Long offerId) {
+        offerRepository.deleteAllById(Collections.singleton(offerId));
         return ResponseEntity.ok().build();
     }
 }
