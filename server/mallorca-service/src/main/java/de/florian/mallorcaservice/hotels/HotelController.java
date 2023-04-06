@@ -17,7 +17,6 @@ import java.util.List;
 public class HotelController {
 
     private HotelRepository hotelRepository;
-    private HotelService hotelService;
     private OfferService offerService;
 
     @GetMapping(value = "/all")

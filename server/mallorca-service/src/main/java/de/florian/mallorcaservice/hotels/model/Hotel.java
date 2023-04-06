@@ -21,11 +21,8 @@ public class Hotel {
     private String hotelName;
 
     private String mail;
-
     private String image;
-
-    @Column(columnDefinition = "INTEGER DEFAULT 1")
-    private Integer minStayDuration;
+    private Boolean hasPool;
 
     @NotNull
     @Min(1)

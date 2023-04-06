@@ -27,8 +27,11 @@ public class FilteredRequestOffers {
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime latestPossible;
+
         private Integer duration;
         private Long hotelId;
         private Double maxPrice;
         private Boolean oceanview;
+        private Integer minStars;
+        private Boolean hasPool;
 }

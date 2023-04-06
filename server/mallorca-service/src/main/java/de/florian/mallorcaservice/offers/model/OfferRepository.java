@@ -14,4 +14,5 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(Integer adultCount, Integer childrenCount, LocalDateTime minDate, LocalDateTime maxDate, Hotel hotel);
 
+    List<Offer> findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(Integer adultCount, Integer childrenCount, LocalDateTime minDate, LocalDateTime maxDate);
 }

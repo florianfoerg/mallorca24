@@ -1,10 +1,12 @@
 package de.florian.mallorcaservice.offers;
 
+import de.florian.mallorcaservice.hotels.model.Hotel;
 import de.florian.mallorcaservice.hotels.model.HotelRepository;
 import de.florian.mallorcaservice.offers.model.*;
 import de.florian.mallorcaservice.requests.FilteredRequestOffers;
 import de.florian.mallorcaservice.requests.RequestFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -19,29 +21,65 @@ public class OfferService {
     private OfferRepository offerRepository;
     private HotelRepository hotelRepository;
 
+    /**
+
+     Creates a new offer for the specified hotel and saves it to the repository.
+     @param newOffer the offer to create
+     @param hotelId the ID of the hotel for which the offer is being created
+     @throws NoSuchElementException if the specified hotel ID does not exist in the repository
+     */
     public void createNewOffer(Offer newOffer, Long hotelId) {
         newOffer.setHotel(hotelRepository.findById(hotelId).orElseThrow());
         offerRepository.save(newOffer);
     }
 
     /**
-     * Returns a list of Offer objects that match the given filters for a particular hotel.
-     * <p>
-     * This method takes a FilteredRequestOffers object as input, which contains various filters for the search, such as the hotel ID, the number of adults and children, the desired meal type, room type, ocean view, and the date range for the search. The method first calculates the minimum and maximum date ranges based on the filter duration and earliest/latest possible dates. It then retrieves a list of offers from the offerRepository based on the provided filters.
-     * <p>
-     * If applicable, the method filters the offers based on meal type, room type, ocean view, and max price. The method then further filters the offers based on the provided date range, and returns a list of Offer objects that match all of the specified filters.
-     *
-     * @param filters a FilteredRequestOffers object containing various filters for the search
-     * @return a List of Offer objects that match the given filters
-     * @throws NoSuchElementException if the specified hotel ID does not exist in the hotelRepository
-     */
 
-    public List<Offer> getOffersOfHotel(FilteredRequestOffers filters) {
+     Returns a list of offers for the specified hotel, filtered by the given request filters.
+     @param filters the filters to apply to the offers
+     @return a list of offers matching the given filters
+     @throws NoSuchElementException if the specified hotel ID does not exist in the repository
+     */
+    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
+    public List<Offer> getOffersOfHotel(final FilteredRequestOffers filters) {
+        final Hotel correspondingHotel = hotelRepository.findById(filters.getHotelId()).orElseThrow();
 
         List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
-                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotelRepository.findById(filters.getHotelId()).orElseThrow());
+                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), correspondingHotel);
 
+        return filterOffersCharacteristics(filters, offers);
+    }
 
+    /**
+
+     Returns a list of offers filtered by the given request filters.
+     @param filters the filters to apply to the offers
+     @return a list of offers matching the given filters
+     */
+    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
+    public List<Offer> getOffersFiltered(final FilteredRequestOffers filters) {
+        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
+                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
+
+        if (filters.getFilter().contains(RequestFilter.POOL)) {
+            offers = offers.stream().parallel().filter(c -> c.getHotel().getHasPool() == filters.getHasPool()).collect(Collectors.toList());
+        }
+
+        if (filters.getFilter().contains(RequestFilter.STARS)) {
+            offers = offers.stream().parallel().filter(c -> c.getHotel().getHotelStars() >= filters.getMinStars()).collect(Collectors.toList());
+        }
+
+        return filterOffersCharacteristics(filters, offers);
+    }
+
+    /**
+
+     Filters the given list of offers by the characteristics specified in the given request filters.
+     @param filters the filters to apply to the offers
+     @param offers the list of offers to filter
+     @return a list of offers matching the given filters
+     */
+    private static List<Offer> filterOffersCharacteristics(FilteredRequestOffers filters, List<Offer> offers) {
         if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
             offers = offers.stream().parallel().filter(c -> c.getMealtype() == filters.getMealtype()).collect(Collectors.toList());
         }

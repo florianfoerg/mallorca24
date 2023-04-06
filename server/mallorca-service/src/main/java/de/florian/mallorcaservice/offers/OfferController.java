@@ -1,6 +1,7 @@
 package de.florian.mallorcaservice.offers;
 
 import de.florian.mallorcaservice.offers.model.*;
+import de.florian.mallorcaservice.requests.FilteredRequestOffers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,10 @@ public class OfferController {
     public ResponseEntity<Void> removeOffer(@PathVariable("id") Long offerId) {
         offerRepository.deleteAllById(Collections.singleton(offerId));
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/offersFiltered")
+    public ResponseEntity<List<Offer>> getFilteredOffers(@RequestBody FilteredRequestOffers filters) {
+        return ResponseEntity.ok(offerService.getOffersFiltered(filters));
     }
 }
