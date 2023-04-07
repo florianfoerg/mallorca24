@@ -43,7 +43,7 @@ public class OfferService {
      @throws NoSuchElementException if the specified hotel ID does not exist in the repository
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
-    public List<OfferDTO> getOffersOfHotel(final FilteredRequest filters, Hotel hotel) {
+    public List<OfferDTO> getOffersOfHotelFiltered(final FilteredRequest filters, Hotel hotel) {
         List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
                 filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel);
 
@@ -70,6 +70,13 @@ public class OfferService {
         }
 
         return filterOffersCharacteristics(filters, offers);
+    }
+
+    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
+    public List<OfferDTO> getOffersOfHotel(Hotel hotel) {
+        List<Offer> offers = offerRepository.findByHotel(hotel);
+
+        return offers.stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
     }
 
     /**

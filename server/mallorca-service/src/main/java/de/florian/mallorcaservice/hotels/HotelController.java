@@ -30,8 +30,18 @@ public class HotelController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/offersOfHotelFiltered/{id}")
+    public ResponseEntity<OffersOfHotel> getOffersFiltered(@RequestBody FilteredRequest filters, @PathVariable("id") Long hotelId) {
+        return ResponseEntity.ok(hotelService.getOffersOfHotelFiltered(filters, hotelId));
+    }
+
     @GetMapping(value = "/offersOfHotel/{id}")
-    public ResponseEntity<OffersOfHotel> getOffers(@RequestBody FilteredRequest filters, @PathVariable("id") Long hotelId) {
-        return ResponseEntity.ok(hotelService.getOffersOfHotel(filters, hotelId));
+    public ResponseEntity<OffersOfHotel> getOffers(@PathVariable("id") Long hotelId) {
+        return ResponseEntity.ok(hotelService.getOffersOfHotel(hotelId));
+    }
+
+    @GetMapping(value = "/suggestions")
+    public ResponseEntity<List<Hotel>> getSuggestions() {
+        return ResponseEntity.ok(hotelService.getCurrentSuggestions());
     }
 }

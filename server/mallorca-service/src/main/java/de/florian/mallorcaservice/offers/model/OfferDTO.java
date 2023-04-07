@@ -3,6 +3,7 @@ package de.florian.mallorcaservice.offers.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -25,6 +26,11 @@ public class OfferDTO {
     private LocalDateTime outboundDepartureDateTime;
 
     private Double price;
+
+    @Min(1)
+    private Integer countAdults;
+
+    private Integer countChildren;
 
     @NotNull
     private Airport outboundDepartureAirport;
