@@ -15,7 +15,18 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-@Table
+@Table(name = "offers", indexes = {
+        @Index(name = "price_index", columnList = "price"),
+        @Index(name = "hotel_index", columnList = "hotel_id"),
+        @Index(name = "airport_index", columnList = "outboundDepartureAirport"),
+        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime"),
+        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,outboundDepartureAirport"),
+        @Index(name = "search_index_hotel", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,hotel_id"),
+        @Index(name = "search_index_roomtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,roomtype"),
+        @Index(name = "search_index_mealtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,mealtype"),
+        @Index(name = "search_index_price", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,price"),
+})
+
 public class Offer {
 
     @Id

@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table
+@Table(name = "hotels", indexes = {
+        @Index(name = "stars_index", columnList = "hotelStars"),
+        @Index(name = "hotel_index", columnList = "hotelId")
+})
 public class Hotel {
 
     @Id

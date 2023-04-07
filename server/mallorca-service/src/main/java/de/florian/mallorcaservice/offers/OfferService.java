@@ -46,7 +46,7 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<OfferDTO> getOffersOfHotelFiltered(final FilteredRequest filters, Hotel hotel) {
-        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
+        List<Offer> offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
                 filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel);
 
         return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
@@ -63,31 +63,31 @@ public class OfferService {
         List<Offer> offers;
 
         if (filters.getFilter().contains(RequestFilter.AIRPORT)) {
-            offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getDepartureAirports());
             filters.getFilter().remove(RequestFilter.AIRPORT);
 
 
         } else if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
-            offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndMealtypeIn(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndMealtypeIn(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMealtypes());
             filters.getFilter().remove(RequestFilter.MEALTYPE);
 
 
         } else if (filters.getFilter().contains(RequestFilter.STARS)) {
-            offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMinStars());
             filters.getFilter().remove(RequestFilter.STARS);
 
 
         } else if (filters.getFilter().contains(RequestFilter.PRICE)) {
-            offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndPriceLessThanEqual(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndPriceLessThanEqual(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMaxPrice());
             filters.getFilter().remove(RequestFilter.PRICE);
 
 
         } else {
-            offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
         }
 

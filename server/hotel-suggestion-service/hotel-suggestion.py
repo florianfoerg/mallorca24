@@ -13,9 +13,9 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 mycursor.execute('''CREATE TABLE IF NOT EXISTS hotel_suggestion 
-                                        (hotel_id BIGINT references hotel)''')
+                                        (hotel_id BIGINT references hotels)''')
 
-mycursor.execute('SELECT hotel_id FROM hotel ORDER BY RAND() LIMIT 15')
+mycursor.execute('SELECT hotel_id FROM hotels ORDER BY RAND() LIMIT 15')
 hotel_ids = mycursor.fetchall()
 
 mycursor.execute('DELETE FROM hotel_suggestion')

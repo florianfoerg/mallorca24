@@ -18,9 +18,6 @@ public class HotelService {
     private OfferService offerService;
     private HotelSuggestionRepository hotelSuggestionRepository;
 
-    public List<HotelOverviewDTO> getHotelOfferOverview(){
-        return hotelRepository.findHotelOverviewDTO();
-    }
 
     public OffersOfHotel getOffersOfHotelFiltered(FilteredRequest filters, Long hotelId) {
         final OffersOfHotel offersOfHotel = new OffersOfHotel();

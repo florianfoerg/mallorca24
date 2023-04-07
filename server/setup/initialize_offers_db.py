@@ -57,51 +57,51 @@ room = {
 airport = {
     "FMO": 0,
     "STR": 1,
-    "HAM": 3,
-    "LEJ": 4,
-    "NUE": 5,
-    "CGN": 6,
-    "FRA": 7,
-    "PAD": 8,
-    "BER": 9,
-    "FMM": 10,
-    "DUS": 11,
-    "SCN": 12,
-    "MUC": 13,
-    "DTM": 14,
-    "DRS": 15,
-    "BRE": 16,
-    "VIE": 17,
-    "NRN": 18,
-    "FKB": 19,
-    "ZRH": 20,
-    "BSL": 21,
-    "HAJ": 22,
-    "AMS": 23,
-    "FDH": 24,
-    "LBC": 25,
-    "HHN": 26,
-    "SZG": 27,
-    "LUX": 28,
-    "PRG": 29,
-    "INN": 30,
-    "KSF": 31,
-    "LNZ": 32,
-    "EIN": 33,
-    "SXB": 34,
-    "BLL": 35,
-    "BRU": 36,
-    "GRZ": 37,
-    "GWT": 38,
-    "CRL": 39,
-    "CSO": 40,
-    "WAW": 41,
-    "GVA": 42,
-    "ERF": 43,
-    "KRK": 44,
-    "BRN": 45,
-    "RLG": 46,
-    "KLU": 47
+    "HAM": 2,
+    "LEJ": 3,
+    "NUE": 4,
+    "CGN": 5,
+    "FRA": 6,
+    "PAD": 7,
+    "BER": 8,
+    "FMM": 9,
+    "DUS": 10,
+    "SCN": 11,
+    "MUC": 12,
+    "DTM": 13,
+    "DRS": 14,
+    "BRE": 15,
+    "VIE": 16,
+    "NRN": 17,
+    "FKB": 18,
+    "ZRH": 19,
+    "BSL": 20,
+    "HAJ": 21,
+    "AMS": 22,
+    "FDH": 23,
+    "LBC": 24,
+    "HHN": 25,
+    "SZG": 26,
+    "LUX": 27,
+    "PRG": 28,
+    "INN": 29,
+    "KSF": 30,
+    "LNZ": 31,
+    "EIN": 32,
+    "SXB": 33,
+    "BLL": 34,
+    "BRU": 35,
+    "GRZ": 36,
+    "GWT": 37,
+    "CRL": 38,
+    "CSO": 39,
+    "WAW": 40,
+    "GVA": 41,
+    "ERF": 42,
+    "KRK": 43,
+    "BRN": 44,
+    "RLG": 45, 
+    "KLU": 46
 }
 
 meal = {
@@ -121,7 +121,7 @@ ocean = {
     "true": True
 }
 
-sql = "INSERT INTO offer (offer_id, count_adults, count_children, inbound_arrival_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+sql = "INSERT INTO offers (offer_id, count_adults, count_children, inbound_arrival_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 # iterate over each row in the CSV file
 for row in reader:
@@ -142,7 +142,7 @@ for row in reader:
     mycursor.execute(sql, (offer_id, count_adults, count_children, inbound_arrival_date_time,
                      mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id))
     
-    if offer_id % 1000 == 0:
+    if offer_id % 100000 == 0:
         mydb.commit()
 
     
