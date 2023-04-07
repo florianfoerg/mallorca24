@@ -14,8 +14,8 @@ import java.util.List;
 @Data
 public class FilteredRequest {
         private List<RequestFilter> filter;
-        private Roomtype roomtype;
-        private Mealtype mealtype;
+        private List<Roomtype> roomtypes;
+        private List<Mealtype> mealtypes;
         private Integer countAdults;
         private Integer countChildren;
         private List<Airport> departureAirports;

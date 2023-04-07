@@ -40,6 +40,6 @@ public class OfferController {
 
     @GetMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
-        return ResponseEntity.ok(hotelService.getHotelOfferOverview());
+        return ResponseEntity.ok(offerService.getOffersFiltered(filters));
     }
 }
