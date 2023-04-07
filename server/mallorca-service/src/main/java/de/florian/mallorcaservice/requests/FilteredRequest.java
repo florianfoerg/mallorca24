@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class FilteredRequestOffers {
+public class FilteredRequest {
         private List<RequestFilter> filter;
         private Roomtype roomtype;
         private Mealtype mealtype;
@@ -29,7 +29,6 @@ public class FilteredRequestOffers {
         private LocalDateTime latestPossible;
 
         private Integer duration;
-        private Long hotelId;
         private Double maxPrice;
         private Boolean oceanview;
         private Integer minStars;

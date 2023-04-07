@@ -3,13 +3,15 @@ package de.florian.mallorcaservice.offers;
 import de.florian.mallorcaservice.hotels.model.Hotel;
 import de.florian.mallorcaservice.hotels.model.HotelRepository;
 import de.florian.mallorcaservice.offers.model.*;
-import de.florian.mallorcaservice.requests.FilteredRequestOffers;
+import de.florian.mallorcaservice.offers.model.mapper.OfferMapper;
+import de.florian.mallorcaservice.requests.FilteredRequest;
 import de.florian.mallorcaservice.requests.RequestFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -41,13 +43,11 @@ public class OfferService {
      @throws NoSuchElementException if the specified hotel ID does not exist in the repository
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
-    public List<Offer> getOffersOfHotel(final FilteredRequestOffers filters) {
-        final Hotel correspondingHotel = hotelRepository.findById(filters.getHotelId()).orElseThrow();
+    public List<OfferDTO> getOffersOfHotel(final FilteredRequest filters, Hotel hotel) {
+        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
+                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel);
 
-        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
-                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), correspondingHotel);
-
-        return filterOffersCharacteristics(filters, offers);
+        return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
     }
 
     /**
@@ -57,8 +57,8 @@ public class OfferService {
      @return a list of offers matching the given filters
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
-    public List<Offer> getOffersFiltered(final FilteredRequestOffers filters) {
-        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndInboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
+    public List<Offer> getOffersFiltered(final FilteredRequest filters) {
+        List<Offer> offers = offerRepository.findByCountAdultsLessThanEqualAndCountChildrenLessThanEqualAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
                 filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
 
         if (filters.getFilter().contains(RequestFilter.POOL)) {
@@ -79,7 +79,7 @@ public class OfferService {
      @param offers the list of offers to filter
      @return a list of offers matching the given filters
      */
-    private static List<Offer> filterOffersCharacteristics(FilteredRequestOffers filters, List<Offer> offers) {
+    private static List<Offer> filterOffersCharacteristics(FilteredRequest filters, List<Offer> offers) {
         if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
             offers = offers.stream().parallel().filter(c -> c.getMealtype() == filters.getMealtype()).collect(Collectors.toList());
         }
@@ -96,7 +96,11 @@ public class OfferService {
             offers = offers.stream().parallel().filter(c -> c.getPrice() <= filters.getMaxPrice()).collect(Collectors.toList());
         }
 
-        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getInboundDepartureDateTime(), c.getInboundArrivalDateTime()) == filters.getDuration()).collect(Collectors.toList());
+        if(filters.getFilter().contains(RequestFilter.AIRPORT)) {
+            offers = offers.stream().parallel().filter(c -> filters.getDepartureAirports().contains(c.getOutboundDepartureAirport())).collect(Collectors.toList());
+        }
+
+        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundArrivalDateTime()) == filters.getDuration()).collect(Collectors.toList());
 
         return offers;
     }

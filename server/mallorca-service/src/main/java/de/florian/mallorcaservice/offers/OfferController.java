@@ -1,7 +1,9 @@
 package de.florian.mallorcaservice.offers;
 
+import de.florian.mallorcaservice.hotels.HotelService;
+import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
 import de.florian.mallorcaservice.offers.model.*;
-import de.florian.mallorcaservice.requests.FilteredRequestOffers;
+import de.florian.mallorcaservice.requests.FilteredRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ public class OfferController {
 
     private OfferRepository offerRepository;
     private OfferService offerService;
+    private HotelService hotelService;
 
     @GetMapping(value = "/all")
     public ResponseEntity<List<Offer>> getAllOffers() {
@@ -36,7 +39,7 @@ public class OfferController {
     }
 
     @GetMapping(value = "/offersFiltered")
-    public ResponseEntity<List<Offer>> getFilteredOffers(@RequestBody FilteredRequestOffers filters) {
-        return ResponseEntity.ok(offerService.getOffersFiltered(filters));
+    public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
+        return ResponseEntity.ok(hotelService.getHotelOfferOverview());
     }
 }
