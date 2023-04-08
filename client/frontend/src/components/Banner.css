@@ -5,7 +5,6 @@
     width: max(80vw, 900px);
     text-align: center;
     font-family: 'Libre Baskerville', serif;
-    font-size: 60px;
     color: white;
     filter: grayscale(40%);;
 }

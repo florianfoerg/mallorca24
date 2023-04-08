@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from "react-router-dom";
 import Banner from '../components/Banner';
+import InvalidRequest from '../components/InvalidRequest';
 
 function HotelResultPage() {
-    const [hotel, setHotel] = useState({})
+    const [validRequest, setValidRequest] = useState(true);
+    let allResults = false;
+    const [hotel, setHotel] = useState({});
 
     const { hotel_id } = useParams();
 
@@ -26,48 +29,46 @@ function HotelResultPage() {
         oceanview
     } = Object.fromEntries(queryParams.entries());
 
-    if (count_adults === undefined && duration === undefined && latest_possible === undefined && earliest_possible === undefined) {
-
-
-    } else {
-
-
+    if (!allResults && count_adults === undefined && duration === undefined && latest_possible === undefined && earliest_possible === undefined) {
+        allResults = true;
     }
 
-
     useEffect(() => {
+
         // API request to get all information from the server
         fetch(`http://localhost:8080/hotels/hotel/${hotel_id}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 setHotel(data)
-            });
+            })
+            .catch(() => { 
+                console.log("uhsdchuas")
+                setValidRequest(false) });
 
-        if (count_adults === undefined && duration === undefined && latest_possible === undefined && earliest_possible === undefined) {
+
+        if (allResults) {
 
             // API request to get all information from the server
             fetch(`http://localhost:8080/hotels/offersOfHotel/${hotel_id}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
                 });
-        }
-        else if (count_adults === undefined || count_children === undefined || duration === undefined || latest_possible === undefined || earliest_possible === undefined) {
-            return <div>Invalid request</div>;
+        }else if (count_adults === undefined || count_children === undefined || duration === undefined || latest_possible === undefined || earliest_possible === undefined) {
+            setValidRequest(false);
         } else {
 
 
         }
-    }, [count_adults, count_children, duration, latest_possible, earliest_possible, hotel_id]);
+    }, [count_adults, count_children, duration, latest_possible, earliest_possible, hotel_id, allResults]);
 
-    document.title = hotel.hotelName + " | Mallorca24";
+    document.title = (validRequest ? hotel.hotelName : "Invalid Request") + " | Mallorca24";
 
 
 
     return (
         <div>
-            <Banner imgSrc={hotel.image} name={hotel.hotelName} />
+            {!validRequest && (<InvalidRequest />)}
+            {validRequest && (<Banner imgSrc={hotel.image} name={hotel.hotelName} />)}
         </div>
     );
 }

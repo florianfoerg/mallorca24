@@ -12,4 +12,6 @@ code {
     monospace;
 }
 
-
+html {
+  scroll-behavior: smooth;
+}
