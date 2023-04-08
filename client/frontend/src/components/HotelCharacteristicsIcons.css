@@ -1,0 +1,32 @@
+.icon-pos,
+.icon-neg {
+    height: 80px;
+    width: 350px;
+    border-width: 3px;
+    border-color: gray;
+    border-style: solid;
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+
+}
+
+.icon-pos svg,
+.icon-neg svg {
+    color: gray;
+    margin-right: 20px;
+     height: 25px;
+}
+
+.icon-pos {
+    border-color: #063773;
+}
+
+.icon-pos svg {
+    color: #063773;
+}

@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
-import HotelOfferPage from "./pages/HotelOfferPage";
+import HotelOfferPage from "./pages/hotel-offer-page/HotelOfferPage";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/landing-page/LandingPage";
 
 function App() {
   return (

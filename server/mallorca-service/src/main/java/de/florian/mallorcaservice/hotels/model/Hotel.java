@@ -24,13 +24,13 @@ public class Hotel {
 
     private String mail;
     private String image;
-    private Boolean hasPool;
 
     @NotNull
     @Min(1)
     @Max(5)
     private Integer hotelStars;
 
+    private Boolean hasPool;
     private Boolean petsAllowed;
     private Boolean freeWifi;
 
