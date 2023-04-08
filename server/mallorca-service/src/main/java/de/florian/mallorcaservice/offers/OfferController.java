@@ -1,6 +1,5 @@
 package de.florian.mallorcaservice.offers;
 
-import de.florian.mallorcaservice.hotels.HotelService;
 import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
 import de.florian.mallorcaservice.offers.model.*;
 import de.florian.mallorcaservice.requests.FilteredRequest;
@@ -18,8 +17,9 @@ public class OfferController {
 
     private OfferRepository offerRepository;
     private OfferService offerService;
-    private HotelService hotelService;
 
+    /* only for debugging because of the huge amount of resulting data */
+    @Deprecated
     @GetMapping(value = "/all")
     public ResponseEntity<List<Offer>> getAllOffers() {
         List<Offer> offers = offerRepository.findAll();

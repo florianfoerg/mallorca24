@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table
+@Table(name = "hotel_suggestions")
 public class HotelSuggestion {
 
     @Id

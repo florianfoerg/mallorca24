@@ -2,7 +2,7 @@ package de.florian.mallorcaservice.hotels;
 
 import de.florian.mallorcaservice.hotels.model.Hotel;
 import de.florian.mallorcaservice.hotels.model.HotelRepository;
-import de.florian.mallorcaservice.offers.model.OffersOfHotel;
+import de.florian.mallorcaservice.offers.model.OfferDTO;
 import de.florian.mallorcaservice.requests.FilteredRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,17 +31,24 @@ public class HotelController {
     }
 
     @GetMapping(value = "/offersOfHotelFiltered/{id}")
-    public ResponseEntity<OffersOfHotel> getOffersFiltered(@RequestBody FilteredRequest filters, @PathVariable("id") Long hotelId) {
+    public ResponseEntity<List<OfferDTO>> getOffersFiltered(@RequestBody FilteredRequest filters, @PathVariable("id") Long hotelId) {
         return ResponseEntity.ok(hotelService.getOffersOfHotelFiltered(filters, hotelId));
     }
 
+    @CrossOrigin
     @GetMapping(value = "/offersOfHotel/{id}")
-    public ResponseEntity<OffersOfHotel> getOffers(@PathVariable("id") Long hotelId) {
+    public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable("id") Long hotelId) {
         return ResponseEntity.ok(hotelService.getOffersOfHotel(hotelId));
     }
 
     @GetMapping(value = "/suggestions")
     public ResponseEntity<List<Hotel>> getSuggestions() {
         return ResponseEntity.ok(hotelService.getCurrentSuggestions());
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/hotel/{id}")
+    public ResponseEntity<Hotel> getHotel(@PathVariable("id") Long hotelId) {
+        return ResponseEntity.ok(hotelRepository.findById(hotelId).orElse(null));
     }
 }

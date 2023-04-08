@@ -2,7 +2,7 @@ package de.florian.mallorcaservice.hotels;
 
 import de.florian.mallorcaservice.hotels.model.*;
 import de.florian.mallorcaservice.offers.OfferService;
-import de.florian.mallorcaservice.offers.model.OffersOfHotel;
+import de.florian.mallorcaservice.offers.model.OfferDTO;
 import de.florian.mallorcaservice.requests.FilteredRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,24 +19,16 @@ public class HotelService {
     private HotelSuggestionRepository hotelSuggestionRepository;
 
 
-    public OffersOfHotel getOffersOfHotelFiltered(FilteredRequest filters, Long hotelId) {
-        final OffersOfHotel offersOfHotel = new OffersOfHotel();
+    public List<OfferDTO> getOffersOfHotelFiltered(FilteredRequest filters, Long hotelId) {
         final Hotel hotel = hotelRepository.findById(hotelId).orElseThrow();
 
-        offersOfHotel.setOffers(offerService.getOffersOfHotelFiltered(filters, hotel));
-        offersOfHotel.setHotel(hotel);
-
-        return offersOfHotel;
+        return offerService.getOffersOfHotelFiltered(filters, hotel);
     }
 
-    public OffersOfHotel getOffersOfHotel(Long hotelId) {
-        final OffersOfHotel offersOfHotel = new OffersOfHotel();
+    public List<OfferDTO> getOffersOfHotel(Long hotelId) {
         final Hotel hotel = hotelRepository.findById(hotelId).orElseThrow();
 
-        offersOfHotel.setOffers(offerService.getOffersOfHotel(hotel));
-        offersOfHotel.setHotel(hotel);
-
-        return offersOfHotel;
+        return offerService.getOffersOfHotel(hotel);
     }
 
     public List<Hotel> getCurrentSuggestions() {
