@@ -31,4 +31,13 @@ public class Hotel {
     @Max(5)
     private Integer hotelStars;
 
+    private Boolean petsAllowed;
+    private Boolean freeWifi;
+
+    private Integer distanceNextAirport;
+    private Integer distanceNextBeach;
+    private Integer distanceCentre;
+
+    private Long clicks;
+
 }

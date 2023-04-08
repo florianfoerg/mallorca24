@@ -14,13 +14,10 @@ public class HotelOverviewDTO {
     private String image;
     private Integer hotelStars;
     private Double minPrice;
-
-    public HotelOverviewDTO(Long hotelId, @NotNull String hotelName, String image, @NotNull @Min(1) @Max(5) Integer hotelStars, Double minPrice){
-        this.hotelId = hotelId;
-        this.hotelName = hotelName;
-        this.image = image;
-        this.hotelStars = hotelStars;
-        this.minPrice = minPrice;
-    }
-
+    private Boolean hasPool;
+    private Boolean petsAllowed;
+    private Boolean freeWifi;
+    private Boolean closeToAirport;
+    private Boolean closeToCentre;
+    private Boolean closeToBeach;
 }

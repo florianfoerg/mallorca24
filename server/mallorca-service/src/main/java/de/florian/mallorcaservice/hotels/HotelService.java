@@ -1,6 +1,7 @@
 package de.florian.mallorcaservice.hotels;
 
 import de.florian.mallorcaservice.hotels.model.*;
+import de.florian.mallorcaservice.hotels.model.mapper.HotelMapper;
 import de.florian.mallorcaservice.offers.OfferService;
 import de.florian.mallorcaservice.offers.model.OfferDTO;
 import de.florian.mallorcaservice.requests.FilteredRequest;
@@ -31,7 +32,7 @@ public class HotelService {
         return offerService.getOffersOfHotel(hotel);
     }
 
-    public List<Hotel> getCurrentSuggestions() {
-        return hotelSuggestionRepository.findAll().stream().map(HotelSuggestion::getHotel).collect(Collectors.toList());
+    public List<HotelOverviewDTO> getCurrentSuggestions() {
+        return hotelSuggestionRepository.findAll().stream().map(HotelSuggestion::getHotel).map(HotelMapper.INSTANCE::hotelToHotelOverviewDTO).collect(Collectors.toList());
     }
 }

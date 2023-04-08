@@ -1,6 +1,7 @@
 package de.florian.mallorcaservice.hotels;
 
 import de.florian.mallorcaservice.hotels.model.Hotel;
+import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
 import de.florian.mallorcaservice.hotels.model.HotelRepository;
 import de.florian.mallorcaservice.offers.model.OfferDTO;
 import de.florian.mallorcaservice.requests.FilteredRequest;
@@ -42,7 +43,7 @@ public class HotelController {
     }
 
     @GetMapping(value = "/suggestions")
-    public ResponseEntity<List<Hotel>> getSuggestions() {
+    public ResponseEntity<List<HotelOverviewDTO>> getSuggestions() {
         return ResponseEntity.ok(hotelService.getCurrentSuggestions());
     }
 
