@@ -9,9 +9,9 @@ const Footer = () => {
 
     return (
         <div>
-            <div style={{ marginTop: "30px", height: "50px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#005ea8" }}>
-                <a href="#" style={{ color: "#f9f9f9" }}>Jump to the top</a>
-            </div>
+            <a className='to-top' href="#">
+                Jump to the top
+            </a>
             <div style={{ paddingBottom: "46px", backgroundColor: "#063773", color: "white", height: "300px", paddingTop: "46px" }}>
                 <Container fluid="xxl">
                     <Row style={{ height: "150px" }}>

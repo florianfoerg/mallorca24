@@ -1,3 +1,4 @@
+import HotelRecommendations from '../components/HotelRecommendations';
 import './LandingPage.css'
 
 const LandingPage = () => {
@@ -7,10 +8,11 @@ const LandingPage = () => {
             </video>
             <div className="heading-container">
                 <div className="heading">
-                    <img src='https://i.imgur.com/iHBrzXW.png' style={{width: "min(50vw,400px)"}} alt='Mallorca transparent'></img>
+                    <img src='https://i.imgur.com/i1EZqwL.png' style={{width: "min(50vw,400px)"}} alt='Mallorca transparent'></img>
                     <h1 style={{maxWidth: "400px"}}>Find your perfect Mallorca trip</h1>
                 </div>
             </div>
+            <HotelRecommendations />
         </div>
     );
 }
