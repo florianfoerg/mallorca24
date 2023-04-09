@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './HotelRecommendations.css'
 import { Button, Card } from 'react-bootstrap';
 import { Rating } from 'react-simple-star-rating';
 import { faCity, faDog, faPersonSwimming, faPlane, faUmbrellaBeach, faWifi } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const HotelRecommendationCard = ({ name, img, stars, id, idx, has_pool, close_to_centre, close_to_beach, pets_allowed, free_wifi, close_to_airport }) => {
     return (
         <Card style={{ width: '18rem', borderRadius: "0", boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)" }}>
-            <Card.Img variant="top" src={img} style={{ borderRadius: "0", height: "200px" }} />
+            <Card.Img variant="top" src={img} style={{ borderRadius: "0", height: "200px" }} alt={'image '+ name} />
             <Card.Body>
                 <div>{idx}.</div>
                 <Card.Title style={{ marginTop: "10px" }}>
@@ -40,7 +39,7 @@ const HotelRecommendations = () => {
 
     useEffect(() => {
         // API request to get current recommendations from server
-        fetch(`http://localhost:8080/hotels/suggestions`)
+        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/suggestions`)
             .then(response => response.json())
             .then(data => {
                 setRecommendations(data)

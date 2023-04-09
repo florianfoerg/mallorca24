@@ -1,0 +1,5 @@
+.invalid-request {
+    height: max(600px, calc(100vh - 480px));
+    margin-right: 20px;
+    margin-left: 20px;
+}

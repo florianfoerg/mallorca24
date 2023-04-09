@@ -1,4 +1,4 @@
-import HotelRecommendations from '../../components/HotelRecommendations';
+import HotelRecommendations from '../../components/landing/HotelRecommendations';
 import './LandingPage.css'
 
 const LandingPage = () => {

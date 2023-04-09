@@ -1,0 +1,16 @@
+.offer-card {
+    margin-left: auto;
+    margin-right:auto;
+    width: max(350px, 40vw);
+    margin-top: 15px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.offer-card svg {
+    color: #063773;
+}
+
+.offer-card-sec {
+    width: max(33%, 250px);
+    margin-top:15px;
+}
