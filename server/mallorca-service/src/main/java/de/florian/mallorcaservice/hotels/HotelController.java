@@ -31,7 +31,7 @@ public class HotelController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/offersOfHotelFiltered/{id}")
+    @PostMapping(value = "/offersOfHotelFiltered/{id}")
     public ResponseEntity<List<OfferDTO>> getOffersFiltered(@RequestBody FilteredRequest filters, @PathVariable("id") Long hotelId) {
         return ResponseEntity.ok(hotelService.getOffersOfHotelFiltered(filters, hotelId));
     }

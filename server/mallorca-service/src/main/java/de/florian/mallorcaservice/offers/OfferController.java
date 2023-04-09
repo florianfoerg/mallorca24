@@ -38,6 +38,12 @@ public class OfferController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/offer/{id}")
+    public ResponseEntity<Offer> getOffer(@PathVariable("id") Long offerId) {
+        return ResponseEntity.ok(offerRepository.findById(offerId).orElse(null));
+    }
+
+
     @GetMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
         return ResponseEntity.ok(offerService.getOffersFiltered(filters));

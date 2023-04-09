@@ -143,7 +143,7 @@ public class OfferService {
             offers = offers.stream().parallel().filter(c -> filters.getDepartureAirports().contains(c.getOutboundDepartureAirport())).collect(Collectors.toList());
         }
 
-        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundArrivalDateTime()) == filters.getDuration()).collect(Collectors.toList());
+        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundArrivalDateTime()) + 1 == filters.getDuration()).collect(Collectors.toList());
 
         return offers;
     }

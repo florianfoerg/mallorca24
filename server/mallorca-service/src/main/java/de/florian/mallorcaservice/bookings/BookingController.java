@@ -1,16 +1,17 @@
 package de.florian.mallorcaservice.bookings;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
+
+    private BookingService bookingService;
 
     @PostMapping(value = "/confirmation")
     public ResponseEntity confirmBooking(@RequestParam Long bookingId) {
@@ -28,5 +29,10 @@ public class BookingController {
                                        @RequestParam Integer duration,
                                        @RequestParam LocalDateTime startDate) {
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/hotelBookings/{hotel_id}")
+    public ResponseEntity<Integer> getNumberBookingsHotel(@PathVariable("hotel_id") Long hotelId){
+        return ResponseEntity.ok(bookingService.getNumberBookingsOfHotel(hotelId));
     }
 }

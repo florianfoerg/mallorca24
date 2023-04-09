@@ -3,10 +3,10 @@ import { Button, Card } from "react-bootstrap";
 import { LazyLoadComponent, trackWindowScroll } from "react-lazy-load-image-component";
 import './OffersOfHotel.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowTrendUp, faBowlFood, faDoorClosed, faPlane, faWater } from "@fortawesome/free-solid-svg-icons";
+import { faArrowTrendUp, faBowlFood, faDoorClosed, faPlaneArrival, faPlaneDeparture, faWater } from "@fortawesome/free-solid-svg-icons";
 
 
-function dayDiff(departureDate, arrivalDate) {
+export function dayDiff(departureDate, arrivalDate) {
     const timeDifference = arrivalDate.getTime() - departureDate.getTime();
     return Math.ceil(timeDifference / (86400000));
 }
@@ -38,7 +38,8 @@ const roomtypeImages = {
 }
 
 
-const OfferCard = ({ offer }) => {
+export const OfferCard = ({ offer, overview }) => {
+
     const departureDate = new Date(offer.outboundDepartureDateTime);
     const arrivalDate = new Date(offer.inboundArrivalDateTime);
 
@@ -59,10 +60,10 @@ const OfferCard = ({ offer }) => {
                     <div className="offer-card-sec">
                         <Card.Title>Data:</Card.Title>
                         <div>{departureDate.toLocaleString()}</div>
-                        <div><FontAwesomeIcon icon={faPlane} style={{marginRight: "15px"}}/> MUC <FontAwesomeIcon icon={faArrowTrendUp}  /> PIM </div>
+                        <div><FontAwesomeIcon icon={faPlaneDeparture} style={{marginRight: "15px"}}/> {offer.outboundDepartureAirport} <FontAwesomeIcon icon={faArrowTrendUp}  /> PIM </div>
 
                         <div style={{marginTop: "15px"}}>{arrivalDate.toLocaleString()}</div>
-                        <div><FontAwesomeIcon icon={faPlane} style={{marginRight: "15px"}}/> MUC <FontAwesomeIcon icon={faArrowTrendUp}  /> PIM </div>
+                        <div><FontAwesomeIcon icon={faPlaneArrival} style={{marginRight: "15px"}}/> PIM <FontAwesomeIcon icon={faArrowTrendUp}  /> {offer.outboundDepartureAirport} </div>
                     </div>
 
                     <div className="offer-card-sec">
@@ -78,13 +79,14 @@ const OfferCard = ({ offer }) => {
                     </div>
 
                 </div>
-
+                {!overview && (
                 <div style={{ display: "flex", justifyContent: "end", alignItems: "center", marginTop: "15px" }}>
                     <div style={{ height: "100%", justifyContent: "center", fontSize: "23px", marginRight: "10px" }}>
                         <b>{offer.price},- €</b>
                     </div>
-                    <Button variant="outline-dark" style={{ borderRadius: "0", width: "150px" }}>Book offer</Button>
+                    <Button variant="outline-dark" style={{ borderRadius: "0", width: "150px" }} href={"/offers/overview/" + offer.offerId}>Book offer</Button>
                 </div>
+                )}
 
             </Card.Body>
         </Card>
@@ -94,6 +96,7 @@ const OfferCard = ({ offer }) => {
 
 
 const OffersOfHotel = ({ offers, scrollPosition }) => {
+    console.log(offers)
     return (
         <div>
             {offers.map((o, i) => {
@@ -103,7 +106,7 @@ const OffersOfHotel = ({ offers, scrollPosition }) => {
                             scrollPosition={scrollPosition}
                             style={{ height: "350px", width: "40vw" }}
                         >
-                            <OfferCard offer={o} />
+                            <OfferCard offer={o} overview={false} />
                         </LazyLoadComponent>
                     </React.Fragment>
                 )

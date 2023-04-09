@@ -27,6 +27,10 @@
     border-color: #063773;
 }
 
+.icon-pos:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
 .icon-pos svg {
     color: #063773;
 }
