@@ -3,7 +3,7 @@ import { Button, Card } from "react-bootstrap";
 import { LazyLoadComponent, trackWindowScroll } from "react-lazy-load-image-component";
 import './OffersOfHotel.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowTrendUp, faBowlFood, faDoorClosed, faPlaneArrival, faPlaneDeparture, faWater } from "@fortawesome/free-solid-svg-icons";
+import { faArrowTrendUp, faDoorClosed, faPizzaSlice, faPlaneArrival, faPlaneDeparture, faWater } from "@fortawesome/free-solid-svg-icons";
 
 
 export function dayDiff(departureDate, arrivalDate) {
@@ -75,7 +75,7 @@ export const OfferCard = ({ offer, overview }) => {
 
                     <div className="offer-card-sec">
                         <Card.Title>Benefits:</Card.Title>
-                        <div><FontAwesomeIcon icon={faBowlFood} /> {offer.mealtype.toLowerCase()}</div>
+                        <div><FontAwesomeIcon icon={faPizzaSlice} /> {offer.mealtype.toLowerCase()}</div>
                     </div>
 
                 </div>
@@ -96,7 +96,6 @@ export const OfferCard = ({ offer, overview }) => {
 
 
 const OffersOfHotel = ({ offers, scrollPosition }) => {
-    console.log(offers)
     return (
         <div>
             {offers.map((o, i) => {

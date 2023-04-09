@@ -29,7 +29,7 @@ const Footer = () => {
                         {isWidthScreen && (<Col style={{ textAlign: "center" }}>
                             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%", alignItems: "center" }}>
                                 Project was created as part of the CHECK24 GenDev Coding Challenge 2023. <br />
-                                The GenDev Scholarship was created to help aspiring students in the field of computer science focus onhands-on experience and working on production code.
+                                The GenDev Scholarship aims to help aspiring students in the field of computer science focus onhands-on experience and working on production code.
                             </div>
                         </Col>)}
 
