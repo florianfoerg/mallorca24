@@ -12,7 +12,7 @@ const NavBar = () => {
                 <Container fluid>
                     <Navbar.Brand href="/" className='mx-r' style={{ marginLeft: "20px" }}>
                         <img
-                            src="https://raw.githubusercontent.com/check24-scholarships/holiday-challenge/77cec2a5875af15d3deadbf4524d89eb8c92aaf6/default-frontend/public/logo.svg"
+                            src="https://i.imgur.com/ARsWxDA.png"
                             height="40px"
                             className="d-inline-block align-top"
                             alt="Mallorca24 Logo"
