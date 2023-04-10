@@ -17,7 +17,7 @@ public class HotelService {
 
     private HotelRepository hotelRepository;
     private OfferService offerService;
-    private HotelSuggestionRepository hotelSuggestionRepository;
+    private HotelRecommendationRepository hotelSuggestionRepository;
 
 
     public List<OfferDTO> getOffersOfHotelFiltered(FilteredRequest filters, Long hotelId) {
@@ -32,7 +32,19 @@ public class HotelService {
         return offerService.getOffersOfHotel(hotel);
     }
 
-    public List<HotelOverviewDTO> getCurrentSuggestions() {
-        return hotelSuggestionRepository.findAll().stream().map(HotelSuggestion::getHotel).map(HotelMapper.INSTANCE::hotelToHotelOverviewDTO).collect(Collectors.toList());
+    public List<HotelOverviewDTO> getCurrentRecommendations() {
+        return hotelSuggestionRepository.findAll().stream().map(HotelRecommendation::getHotel).map(HotelMapper.INSTANCE::hotelToHotelOverviewDTO).collect(Collectors.toList());
+    }
+
+    public Hotel requestHotelData(final Long hotelId) {
+        final Hotel hotel = hotelRepository.findById(hotelId).orElse(null);
+
+        // track how often a hotel gets shown
+        if(hotel != null) {
+            hotel.setClicks(hotel.getClicks() + 1);
+            hotelRepository.save(hotel);
+        }
+
+        return hotel;
     }
 }

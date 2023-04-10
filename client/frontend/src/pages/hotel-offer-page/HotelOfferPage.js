@@ -5,10 +5,8 @@ import HotelCharacteristicsIcons from '../../components/hotel-offer/HotelCharact
 import OffersOfHotel from '../../components/hotel-offer/OffersOfHotel';
 import Banner from '../../components/hotel-offer/Banner';
 import SiteOrganizer from '../../components/general/SiteOrganizer';
-import MapSection from '../../components/hotel-offer/MapSection';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCity, faPlane, faUmbrellaBeach } from '@fortawesome/free-solid-svg-icons';
 import LocationComp from '../../components/hotel-offer/LocationComp';
+
 
 function min(a, b) {
     return a < b ? a : b;
@@ -119,8 +117,6 @@ function HotelResultPage() {
 
     document.title = (validRequest ? hotel.hotelName : "Invalid Request") + " | Mallorca24";
 
-    console.log(hotel)
-
     return (
         <div>
 
@@ -137,10 +133,7 @@ function HotelResultPage() {
 
                     <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
                         <div style={{ width: "80vw", marginTop: "30px" }}>
-                            <p><b>Description: </b>Welcome to our hotel in Mallorca, a luxurious and modern retreat located on the beautiful island of Mallorca. With stunning views of the Mediterranean Sea and surrounded by lush greenery, our hotel offers the perfect escape for those seeking relaxation and tranquility.
-                                Our spacious and elegant rooms and suites are designed with your comfort in mind, featuring plush bedding, modern amenities, and private balconies or terraces with breathtaking views. Whether you're traveling for business or pleasure, our hotel offers everything you need to unwind and rejuvenate, including an outdoor pool, spa, and fitness center.
-                                Indulge in delicious cuisine at our on-site restaurant, which offers a variety of dishes using fresh, locally sourced ingredients. And for those looking to explore the island, our hotel is ideally located near many popular attractions, including beautiful beaches, historic landmarks, and charming villages.
-                                Experience the ultimate in luxury and relaxation at our hotel in Mallorca. We look forward to welcoming you soon.</p>
+                            <p><b>Description: </b>{hotel.description}</p>
                         </div>
                         <LocationComp hotel={hotel} />
                     </div>
@@ -157,7 +150,6 @@ function HotelResultPage() {
                         }
                     </div>
                     <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(offers.length / 20)} scrollRef={offersRef} />
-                    <MapSection />
                 </div>
                 )}
         </div>

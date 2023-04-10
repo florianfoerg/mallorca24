@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "hotel_suggestions")
-public class HotelSuggestion {
+@Table(name = "hotel_recommendations")
+public class HotelRecommendation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

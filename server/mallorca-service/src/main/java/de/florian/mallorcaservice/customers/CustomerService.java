@@ -11,15 +11,17 @@ public class CustomerService {
 
     private CustomerRepository customerRepository;
 
-    public void addCostumer(String mail){
-        //it is impossible that different customers have an identical e-mail address
-        if(!customerRepository.findCustomerByMail(mail).isEmpty()) {
-            return;
+    public Customer addCostumer(String email){
+        Customer newCostumer = customerRepository.findCustomerByMail(email);
+
+        if(newCostumer != null) {
+            return newCostumer;
         }
 
-        Customer newCostumer = new Customer();
-        newCostumer.setMail(mail);
-
+        newCostumer = new Customer();
+        newCostumer.setMail(email);
         customerRepository.save(newCostumer);
+
+        return newCostumer;
     }
 }

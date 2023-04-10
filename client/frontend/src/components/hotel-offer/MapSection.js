@@ -5,13 +5,22 @@ import "leaflet/dist/leaflet.css";
 import "./Map.css";
 import L from "leaflet";
 
+// map marker
+function mapMarker(marker) {
+    return {
+        lat: marker.latitude,
+        lng: marker.longitude
+    }
+}
+
+
 // Startpoint of map
 const center = {
     lat: 39.613342,
     lng: 2.956849
 }
 
-const MapSection = ({ name }) => {
+const MapSection = ({ name, marker }) => {
 
 
     const markerIcon = L.icon({
@@ -22,22 +31,27 @@ const MapSection = ({ name }) => {
         shadowUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-shadow.png"
     });
 
+
     return (
-        <MapContainer
-            className="map"
-            center={[center.lat, center.lng]}
-            zoom={9}
-            scrollWheelZoom={false}
-        >
-            <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={center} icon={markerIcon}>
-                <Popup>
-                    {name}
-                </Popup>
-            </Marker>
-        </MapContainer>
+        <div style={{height: "100%", width: "100%"}}>
+        {  marker !== undefined && (
+            <MapContainer
+                className="map"
+                center={[center.lat, center.lng]}
+                zoom={9}
+                scrollWheelZoom={false}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Marker position={mapMarker(marker)} icon={markerIcon}>
+                    <Popup>
+                        {name}
+                    </Popup>
+                </Marker>
+            </MapContainer>
+        )}
+        </div>
     );
 }
 

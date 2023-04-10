@@ -46,14 +46,14 @@ const OfferOverviewPage = () => {
             {validRequest && (
                 <div style={{ width: isWidthScreen ? "67vw" : "100vw", marginRight: "auto", marginLeft: "auto" }}>
                     {/* Display the offer ID */}
-                    <div style={{ textAlign: "left", fontSize: "30px", marginTop: "30px" }}><b>Overview #{offer_id}:</b></div>
+                    <div style={{ textAlign: "left", fontSize: "30px", marginTop: "30px" }}><b>Offer-Overview:</b></div>
 
                     <div style={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
                         {/* Display the offer data */}
-                        {offer !== undefined && offer.hotel !== undefined && offer.outboundDepartureDateTime !== undefined && offer.inboundArrivalDateTime !== undefined && (
+                        {offer !== undefined && offer.hotel !== undefined && offer.outboundDepartureDateTime !== undefined && offer.inboundDepartureDateTime !== undefined && (
                             <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
                                 {/* Display the hotel overview card */}
-                                <HotelOverviewCard hotel={offer.hotel} dep={offer.outboundDepartureDateTime} arr={offer.inboundArrivalDateTime} />
+                                <HotelOverviewCard hotel={offer.hotel} dep={offer.outboundDepartureDateTime} arr={offer.inboundDepartureDateTime} />
                                 {/* Display the offer card */}
                                 <OfferCard offer={offer} overview={true} />
 
@@ -71,7 +71,7 @@ const OfferOverviewPage = () => {
 
                                 {/* Display the complete purchase button */}
                                 <div style={{ marginTop: "15px", width: "70vw" }}>
-                                    <Button variant="outline-dark" style={{ borderRadius: "0", marginBottom: "20px", width: "250px", height: "100px", fontSize: "20px"}} href={"/offers/book/" + offer_id}>
+                                    <Button variant="outline-dark" style={{ borderRadius: "0", marginBottom: "20px", width: "250px", height: "100px", fontSize: "20px"}} href={"/offers/confirm-booking/" + offer_id}>
                                         <div style={{ display: "flex", justifyContent: "center", height: "100%", alignItems: "center" }} >
                                             <FontAwesomeIcon icon={faUmbrellaBeach} className="beach-icon" />
                                             <b style={{marginLeft: "5px"}}>Complete purchase</b>

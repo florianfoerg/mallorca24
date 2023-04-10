@@ -12,17 +12,17 @@ mydb = mysql.connector.connect(
 # create a cursor object to execute SQL queries
 mycursor = mydb.cursor()
 
-mycursor.execute('''CREATE TABLE IF NOT EXISTS hotel_suggestions 
+mycursor.execute('''CREATE TABLE IF NOT EXISTS hotel_recommendations
                                         (id INTEGER PRIMARY KEY,
                                         hotel_id BIGINT references hotels)''')
 
 mycursor.execute('SELECT hotel_id FROM hotels ORDER BY RAND() LIMIT 15')
 hotel_ids = mycursor.fetchall()
 
-mycursor.execute('DELETE FROM hotel_suggestions')
+mycursor.execute('DELETE FROM hotel_recommendations')
 
 for i, hotel_id in enumerate(hotel_ids):
-    mycursor.execute('INSERT INTO hotel_suggestions (id, hotel_id) VALUES (%s, %s)', (i+1, hotel_id[0]))
+    mycursor.execute('INSERT INTO hotel_recommendations (id, hotel_id) VALUES (%s, %s)', (i+1, hotel_id[0]))
 
 mydb.commit()
 # close the database connection

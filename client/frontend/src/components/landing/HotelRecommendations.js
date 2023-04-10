@@ -39,7 +39,7 @@ const HotelRecommendations = () => {
 
     useEffect(() => {
         // API request to get current recommendations from server
-        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/suggestions`)
+        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/recommendations`)
             .then(response => response.json())
             .then(data => {
                 setRecommendations(data)

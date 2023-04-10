@@ -16,16 +16,16 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findByHotel(Hotel hotel);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Hotel hotel);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotel(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Hotel hotel);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBefore(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndOutboundDepartureAirportIn(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Collection<@NotNull Airport> outboundDepartureAirport);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndOutboundDepartureAirportIn(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Collection<@NotNull Airport> outboundDepartureAirport);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndMealtypeIn(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Collection<Mealtype> mealtype);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndMealtypeIn(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Collection<Mealtype> mealtype);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, @Min(1) @Max(5) Integer hotel_hotelStars);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, @Min(1) @Max(5) Integer hotel_hotelStars);
 
-    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndPriceLessThanEqual(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Double price);
+    List<Offer> findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndPriceLessThanEqual(@Min(1) Integer countAdults, Integer countChildren, @NotNull LocalDateTime outboundDepartureDateTime, @NotNull LocalDateTime inboundArrivalDateTime, Double price);
 
 }

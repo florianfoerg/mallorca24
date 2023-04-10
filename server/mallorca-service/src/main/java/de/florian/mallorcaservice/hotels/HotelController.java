@@ -42,14 +42,14 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getOffersOfHotel(hotelId));
     }
 
-    @GetMapping(value = "/suggestions")
-    public ResponseEntity<List<HotelOverviewDTO>> getSuggestions() {
-        return ResponseEntity.ok(hotelService.getCurrentSuggestions());
+    @GetMapping(value = "/recommendations")
+    public ResponseEntity<List<HotelOverviewDTO>> getRecommendations() {
+        return ResponseEntity.ok(hotelService.getCurrentRecommendations());
     }
 
     @CrossOrigin
     @GetMapping(value = "/hotel/{id}")
     public ResponseEntity<Hotel> getHotel(@PathVariable("id") Long hotelId) {
-        return ResponseEntity.ok(hotelRepository.findById(hotelId).orElse(null));
+        return ResponseEntity.ok(hotelService.requestHotelData(hotelId));
     }
 }

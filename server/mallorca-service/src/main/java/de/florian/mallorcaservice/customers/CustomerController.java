@@ -23,8 +23,8 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/new")
-    public ResponseEntity<Void> addNewCustomer(@RequestBody String mail) {
-        customerService.addCostumer(mail);
+    public ResponseEntity<Void> addNewCustomer(@RequestBody String email) {
+        customerService.addCostumer(email);
         return ResponseEntity.ok().build();
     }
 }

@@ -6,6 +6,7 @@ import { dayDiff } from "../hotel-offer/OffersOfHotel";
 
 // This component displays a summary card for a hotel offer.
 const HotelOverviewCard = ({ hotel, dep, arr }) => {
+  
   // Calculate the number of nights based on the departure and arrival dates.
   const nights = dayDiff(new Date(dep), new Date(arr)) - 1;
 

@@ -3,12 +3,13 @@ package de.florian.mallorcaservice.offers;
 import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
 import de.florian.mallorcaservice.offers.model.*;
 import de.florian.mallorcaservice.requests.FilteredRequest;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -34,7 +35,7 @@ public class OfferController {
 
     @DeleteMapping(value = "/offer/{id}")
     public ResponseEntity<Void> removeOffer(@PathVariable("id") Long offerId) {
-        offerRepository.deleteAllById(Collections.singleton(offerId));
+        offerRepository.deleteById(offerId);
         return ResponseEntity.ok().build();
     }
 
@@ -47,5 +48,14 @@ public class OfferController {
     @GetMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
         return ResponseEntity.ok(offerService.getOffersFiltered(filters));
+    }
+
+    @GetMapping(value = "/validate/{offer_id}")
+    public ResponseEntity<Void> validateOffer(@PathVariable("offer_id") Long offerId) {
+            final Optional<Offer> offer = offerRepository.findById(offerId);
+            if(offer.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok().build();
     }
 }

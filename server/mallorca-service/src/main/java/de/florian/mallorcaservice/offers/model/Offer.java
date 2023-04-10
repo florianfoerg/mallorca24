@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
         @Index(name = "price_index", columnList = "price"),
         @Index(name = "hotel_index", columnList = "hotel_id"),
         @Index(name = "airport_index", columnList = "outboundDepartureAirport"),
-        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime"),
-        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,outboundDepartureAirport"),
-        @Index(name = "search_index_hotel", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,hotel_id"),
-        @Index(name = "search_index_roomtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,roomtype"),
-        @Index(name = "search_index_mealtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,mealtype"),
-        @Index(name = "search_index_price", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundArrivalDateTime,price"),
+        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime"),
+        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,outboundDepartureAirport"),
+        @Index(name = "search_index_hotel", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,hotel_id"),
+        @Index(name = "search_index_roomtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,roomtype"),
+        @Index(name = "search_index_mealtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,mealtype"),
+        @Index(name = "search_index_price", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,price"),
 })
 
 public class Offer {
@@ -40,7 +40,7 @@ public class Offer {
     @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime inboundArrivalDateTime;
+    private LocalDateTime inboundDepartureDateTime;
 
     @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

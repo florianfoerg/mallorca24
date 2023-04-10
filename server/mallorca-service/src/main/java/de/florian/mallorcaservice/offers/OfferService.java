@@ -46,7 +46,7 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<OfferDTO> getOffersOfHotelFiltered(final FilteredRequest filters, Hotel hotel) {
-        List<Offer> offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotel(filters.getCountAdults(),
+        List<Offer> offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotel(filters.getCountAdults(),
                 filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel);
 
         return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
@@ -63,31 +63,31 @@ public class OfferService {
         List<Offer> offers;
 
         if (filters.getFilter().contains(RequestFilter.AIRPORT)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getDepartureAirports());
             filters.getFilter().remove(RequestFilter.AIRPORT);
 
 
         } else if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndMealtypeIn(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndMealtypeIn(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMealtypes());
             filters.getFilter().remove(RequestFilter.MEALTYPE);
 
 
         } else if (filters.getFilter().contains(RequestFilter.STARS)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMinStars());
             filters.getFilter().remove(RequestFilter.STARS);
 
 
         } else if (filters.getFilter().contains(RequestFilter.PRICE)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBeforeAndPriceLessThanEqual(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndPriceLessThanEqual(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMaxPrice());
             filters.getFilter().remove(RequestFilter.PRICE);
 
 
         } else {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundArrivalDateTimeBefore(filters.getCountAdults(),
+            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBefore(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
         }
 
@@ -143,7 +143,7 @@ public class OfferService {
             offers = offers.stream().parallel().filter(c -> filters.getDepartureAirports().contains(c.getOutboundDepartureAirport())).collect(Collectors.toList());
         }
 
-        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundArrivalDateTime()) + 1 == filters.getDuration()).collect(Collectors.toList());
+        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundDepartureDateTime()) + 1 == filters.getDuration()).collect(Collectors.toList());
 
         return offers;
     }

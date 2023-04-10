@@ -23,6 +23,7 @@ public class Customer {
     )
     private UUID customerId;
 
+    @Column(unique = true)
     private String mail;
 
 }

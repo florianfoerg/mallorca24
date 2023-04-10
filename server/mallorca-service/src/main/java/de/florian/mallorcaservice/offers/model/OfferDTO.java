@@ -18,7 +18,7 @@ public class OfferDTO {
     @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime inboundArrivalDateTime;
+    private LocalDateTime inboundDepartureDateTime;
 
     @NotNull
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

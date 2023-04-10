@@ -41,7 +41,7 @@ const Footer = () => {
                         </Col>
                     </Row>
                 </Container>
-                <div style={{ textAlign: "center", marginTop: "30px" }}>Florian Förg | Copyright@{new Date().getFullYear()} | <a href="https://www.linkedin.com/in/florian-foerg" style={{ color: "#f9f9f9" }}>LinkedIn</a> | <a href="/impressum" style={{ color: "#f9f9f9" }}>Impressum</a></div>
+                <div style={{ textAlign: "center", marginTop: "30px" }}>Florian Förg | Copyright@{new Date().getFullYear()} | <a href="https://www.linkedin.com/in/florian-foerg" style={{ color: "#f9f9f9" }}>LinkedIn</a> | <a href="/impressum" style={{ color: "#f9f9f9" }}>Imprint</a></div>
             </div>
         </div>
     );

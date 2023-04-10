@@ -1,10 +1,11 @@
 package de.florian.mallorcaservice.bookings;
 
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -13,22 +14,19 @@ public class BookingController {
 
     private BookingService bookingService;
 
-    @PostMapping(value = "/confirmation")
-    public ResponseEntity confirmBooking(@RequestParam Long bookingId) {
+    @PostMapping(value = "/confirmation/{booking_id}")
+    public ResponseEntity<Void> confirmBooking(@PathVariable("booking_id") UUID bookingId) {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/decline")
-    public ResponseEntity declineBooking(@RequestParam Long bookingId) {
+    @PostMapping(value = "/decline/{booking_id}")
+    public ResponseEntity<Void> declineBooking(@PathVariable("booking_id") UUID bookingId) {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/booking/{id}")
-    public ResponseEntity placeBooking(@RequestParam Long hotelId,
-                                       @RequestParam Long customerId,
-                                       @RequestParam Integer duration,
-                                       @RequestParam LocalDateTime startDate) {
-        return ResponseEntity.ok().build();
+    @PostMapping(value = "/booking/{offer_id}")
+    public ResponseEntity<UUID> placeBooking(@PathParam("email") String email, @PathVariable("offer_id") Long offerId) {
+        return ResponseEntity.ok(bookingService.placeBooking(email, offerId));
     }
 
     @GetMapping(value = "/hotelBookings/{hotel_id}")

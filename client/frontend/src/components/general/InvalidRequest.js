@@ -13,7 +13,8 @@ const InvalidRequest = () => {
             <Button variant="outline-light" title='Go back' style={{ maxWidth: "200px", marginTop: "3%", borderRadius: "0", color: "#063773", borderColor: "#063773" }} href='/'>Back to main page</Button>
         </div>
 
-    </div>);
+    </div>
+    );
 }
 
 export default InvalidRequest;

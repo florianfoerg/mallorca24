@@ -15,6 +15,8 @@ function mapOceanview (oceanview) {
     return oceanview ? "ocean view" : "no oceanview";
 }
 
+
+// Set the images for the room types
 const roomtypeImages = {
     SINGLE: "https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     DOUBLE: "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -40,8 +42,9 @@ const roomtypeImages = {
 
 export const OfferCard = ({ offer, overview }) => {
 
+    // Get the departure and arrival date
     const departureDate = new Date(offer.outboundDepartureDateTime);
-    const arrivalDate = new Date(offer.inboundArrivalDateTime);
+    const arrivalDate = new Date(offer.inboundDepartureDateTime);
 
     return (
         <Card className="offer-card" style={{ borderRadius: "0" }}>

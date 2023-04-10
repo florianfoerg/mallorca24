@@ -25,6 +25,9 @@ public class Hotel {
     private String mail;
     private String image;
 
+    @Column(length = 2048)
+    private String description;
+
     @NotNull
     @Min(1)
     @Max(5)
@@ -39,5 +42,15 @@ public class Hotel {
     private Integer distanceCentre;
 
     private Long clicks;
+
+    @NotNull
+    private Marker marker;
+
+    @Data
+    @Embeddable
+    private static class Marker {
+        private Double longitude;
+        private Double latitude;
+    }
 
 }

@@ -121,14 +121,14 @@ ocean = {
     "true": True
 }
 
-sql = "INSERT INTO offers (offer_id, count_adults, count_children, inbound_arrival_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+sql = "INSERT INTO offers (offer_id, count_adults, count_children, inbound_departure_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 # iterate over each row in the CSV file
 for row in reader:
     offer_id += 1
     count_adults = row[3]
     count_children = row[4]
-    inbound_arrival_date_time = convert_date(row[8])
+    inbound_departure_date_time = convert_date(row[2])
     outbound_departure_date_time = convert_date(row[1])
     mealtype = meal[row[12]]
     oceanview = ocean[row[13]]
@@ -139,7 +139,7 @@ for row in reader:
 
     
     # execute the SQL query with the values from the current row
-    mycursor.execute(sql, (offer_id, count_adults, count_children, inbound_arrival_date_time,
+    mycursor.execute(sql, (offer_id, count_adults, count_children, inbound_departure_date_time,
                      mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id))
     
     if offer_id % 100000 == 0:
