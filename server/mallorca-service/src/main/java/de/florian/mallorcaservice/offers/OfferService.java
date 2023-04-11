@@ -12,10 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -62,6 +59,7 @@ public class OfferService {
     public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
         List<Offer> offers;
 
+
         if (filters.getFilter().contains(RequestFilter.AIRPORT)) {
             offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getDepartureAirports());
@@ -92,11 +90,11 @@ public class OfferService {
         }
 
         if (filters.getFilter().contains(RequestFilter.STARS)) {
-            offers = offers.stream().parallel().filter(c -> filters.getMinStars() <= c.getHotel().getHotelStars()).collect(Collectors.toList());
+            offers.removeIf(offer -> filters.getMinStars() > offer.getHotel().getHotelStars());
         }
 
         if (filters.getFilter().contains(RequestFilter.POOL)) {
-            offers = offers.stream().parallel().filter(c -> filters.getHasPool() == c.getHotel().getHasPool()).collect(Collectors.toList());
+            offers.removeIf(offer -> filters.getHasPool() != offer.getHotel().getHasPool());
         }
 
         return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToHotelOverviewDTO)
@@ -123,28 +121,30 @@ public class OfferService {
      * @return a list of offers matching the given filters
      */
     private static List<Offer> filterOffersCharacteristics(FilteredRequest filters, List<Offer> offers) {
+
         if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
-            offers = offers.stream().parallel().filter(c -> filters.getMealtypes().contains(c.getMealtype())).collect(Collectors.toList());
+            offers.removeIf(offer -> !filters.getMealtypes().contains(offer.getMealtype()));
         }
 
         if (filters.getFilter().contains(RequestFilter.ROOMTYPE)) {
-            offers = offers.stream().parallel().filter(c -> filters.getRoomtypes().contains(c.getRoomtype())).collect(Collectors.toList());
+            offers.removeIf(offer -> !filters.getRoomtypes().contains(offer.getRoomtype()));
         }
 
         if (filters.getFilter().contains(RequestFilter.OCEANVIEW)) {
-            offers = offers.stream().parallel().filter(c -> c.getOceanview() == filters.getOceanview()).collect(Collectors.toList());
+            offers.removeIf(offer -> offer.getOceanview() != filters.getOceanview());
         }
 
         if (filters.getFilter().contains(RequestFilter.PRICE)) {
-            offers = offers.stream().parallel().filter(c -> c.getPrice() <= filters.getMaxPrice()).collect(Collectors.toList());
+            offers.removeIf(offer -> offer.getPrice() > filters.getMaxPrice());
         }
 
         if (filters.getFilter().contains(RequestFilter.AIRPORT)) {
-            offers = offers.stream().parallel().filter(c -> filters.getDepartureAirports().contains(c.getOutboundDepartureAirport())).collect(Collectors.toList());
+            offers.removeIf(offer -> !filters.getDepartureAirports().contains(offer.getOutboundDepartureAirport()));
         }
 
-        offers = offers.stream().parallel().filter(c -> ChronoUnit.DAYS.between(c.getOutboundDepartureDateTime(), c.getInboundDepartureDateTime()) + 1 == filters.getDuration()).collect(Collectors.toList());
+        offers.removeIf(offer -> ChronoUnit.DAYS.between(offer.getOutboundDepartureDateTime(), offer.getInboundDepartureDateTime()) + 1 != filters.getDuration());
 
         return offers;
     }
+
 }

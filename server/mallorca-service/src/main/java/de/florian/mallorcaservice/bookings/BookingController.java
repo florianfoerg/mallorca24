@@ -14,11 +14,13 @@ public class BookingController {
 
     private BookingService bookingService;
 
+    @Deprecated
     @PostMapping(value = "/confirmation/{booking_id}")
     public ResponseEntity<Void> confirmBooking(@PathVariable("booking_id") UUID bookingId) {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @PostMapping(value = "/decline/{booking_id}")
     public ResponseEntity<Void> declineBooking(@PathVariable("booking_id") UUID bookingId) {
         return ResponseEntity.ok().build();

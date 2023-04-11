@@ -44,7 +44,6 @@ public class OfferController {
         return ResponseEntity.ok(offerRepository.findById(offerId).orElse(null));
     }
 
-
     @GetMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
         return ResponseEntity.ok(offerService.getOffersFiltered(filters));
@@ -53,9 +52,11 @@ public class OfferController {
     @GetMapping(value = "/validate/{offer_id}")
     public ResponseEntity<Void> validateOffer(@PathVariable("offer_id") Long offerId) {
             final Optional<Offer> offer = offerRepository.findById(offerId);
+
             if(offer.isEmpty()) {
                 return ResponseEntity.badRequest().build();
             }
+
             return ResponseEntity.ok().build();
     }
 }
