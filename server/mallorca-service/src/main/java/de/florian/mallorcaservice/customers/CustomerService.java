@@ -12,16 +12,16 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     public Customer addCostumer(String email){
-        Customer newCostumer = customerRepository.findCustomerByMail(email);
+        Customer customer = customerRepository.findCustomerByMail(email);
 
-        if(newCostumer != null) {
-            return newCostumer;
+        if(customer != null) {
+            return customer;
         }
 
-        newCostumer = new Customer();
-        newCostumer.setMail(email);
-        customerRepository.save(newCostumer);
+        customer = new Customer();
+        customer.setMail(email);
+        customerRepository.save(customer);
 
-        return newCostumer;
+        return customer;
     }
 }

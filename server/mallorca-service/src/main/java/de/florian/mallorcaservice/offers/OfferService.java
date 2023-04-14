@@ -1,5 +1,6 @@
 package de.florian.mallorcaservice.offers;
 
+import de.florian.mallorcaservice.bookings.BookingService;
 import de.florian.mallorcaservice.hotels.model.Hotel;
 import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
 import de.florian.mallorcaservice.hotels.model.HotelRepository;
@@ -21,6 +22,7 @@ public class OfferService {
 
     private OfferRepository offerRepository;
     private HotelRepository hotelRepository;
+    private BookingService bookingService;
 
     /**
      * Creates a new offer for the specified hotel and saves it to the repository.
@@ -57,6 +59,8 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
+
+        System.out.println("a");
         List<Offer> offers;
 
 
@@ -89,6 +93,8 @@ public class OfferService {
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
         }
 
+        System.out.println("b");
+
         if (filters.getFilter().contains(RequestFilter.STARS)) {
             offers.removeIf(offer -> filters.getMinStars() > offer.getHotel().getHotelStars());
         }
@@ -97,13 +103,21 @@ public class OfferService {
             offers.removeIf(offer -> filters.getHasPool() != offer.getHotel().getHasPool());
         }
 
-        return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToHotelOverviewDTO)
-                .collect(Collectors.groupingBy(HotelOverviewDTO::getHotelId,
-                        Collectors.minBy(Comparator.comparing(HotelOverviewDTO::getMinPrice))))
+        offers = filterOffersCharacteristics(filters, offers);
+
+        List<Offer> minPriceOffers = offers.stream()
+                .collect(Collectors.groupingBy(
+                        offer -> offer.getHotel().getHotelId(),
+                        Collectors.minBy(Comparator.comparing(Offer::getPrice))))
                 .values()
                 .stream()
                 .map(Optional::get)
                 .collect(Collectors.toList());
+
+
+        final List<Offer> finalOffers = offers;
+
+        return minPriceOffers.stream().map(o -> new HotelOverviewDTO(o, finalOffers, bookingService)).toList();
     }
 
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again

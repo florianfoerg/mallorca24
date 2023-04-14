@@ -44,8 +44,9 @@ public class OfferController {
         return ResponseEntity.ok(offerRepository.findById(offerId).orElse(null));
     }
 
-    @GetMapping(value = "/offersFiltered")
+    @PostMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
+        System.out.println(filters);
         return ResponseEntity.ok(offerService.getOffersFiltered(filters));
     }
 
@@ -54,7 +55,7 @@ public class OfferController {
             final Optional<Offer> offer = offerRepository.findById(offerId);
 
             if(offer.isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok().build();

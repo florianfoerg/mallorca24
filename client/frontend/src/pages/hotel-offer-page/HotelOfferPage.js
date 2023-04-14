@@ -6,11 +6,9 @@ import OffersOfHotel from '../../components/hotel-offer/OffersOfHotel';
 import Banner from '../../components/hotel-offer/Banner';
 import SiteOrganizer from '../../components/general/SiteOrganizer';
 import LocationComp from '../../components/hotel-offer/LocationComp';
+import { min } from '../../components/general/Math';
+import NoResultsFound from '../../components/general/NoResultsFound';
 
-
-function min(a, b) {
-    return a < b ? a : b;
-}
 
 function HotelResultPage() {
     const [validRequest, setValidRequest] = useState(true);
@@ -18,6 +16,7 @@ function HotelResultPage() {
     const [hotel, setHotel] = useState({});
     const [amountBookings, setAmountBookings] = useState(0);
     const [offers, setOffers] = useState([]);
+    const [offersLoaded, setOffersLoaded] = useState(false);
 
     const [site, setSite] = useState(1);
     const offersRef = useRef(null);
@@ -37,6 +36,8 @@ function HotelResultPage() {
         //optional
         max_price,
         oceanview,
+        has_pool,
+        min_stars,
     } = Object.fromEntries(queryParams.entries());
 
     // optional
@@ -76,27 +77,33 @@ function HotelResultPage() {
             fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/offersOfHotel/${hotel_id}`)
                 .then(response => response.json())
                 .then(data => {
-                    setOffers(data)
+                    setOffers(data);
+                    setOffersLoaded(true);
                 });
         } else if (count_adults === undefined || count_children === undefined || duration === undefined || latest_possible === undefined || earliest_possible === undefined) {
             setValidRequest(false);
         } else {
+
             const filteredRequest = {
                 filter: (roomtypes && roomtypes.length > 0 ? ["ROOMTYPE"] : [])
                     .concat(oceanview !== undefined ? ["OCEANVIEW"] : [])
                     .concat((mealtypes && mealtypes.length > 0 ? ["MEALTYPE"] : []))
                     .concat(max_price !== undefined ? ["PRICE"] : [])
-                    .concat((departure_airports && departure_airports.length > 0 ? ["AIRPORT"] : [])),
+                    .concat((departure_airports && departure_airports.length > 0 ? ["AIRPORT"] : []))
+                    .concat(has_pool !== undefined ? ["POOL"] : [])
+                    .concat(min_stars !== undefined ? ["STARS"] : []),
                 roomtypes,
                 mealtypes,
                 countAdults: parseInt(count_adults),
                 countChildren: parseInt(count_children),
                 departureAirports: departure_airports,
-                earliestPossible: earliest_possible,
-                latestPossible: latest_possible,
+                earliestPossible: earliest_possible + " 00:00:00",
+                latestPossible: latest_possible + " 23:59:59",
                 duration: parseInt(duration),
                 maxPrice: max_price,
-                oceanview: oceanview
+                oceanview: oceanview,
+                hasPool: has_pool,
+                minStars: min_stars,
             };
 
             // API request to get all information from the server
@@ -110,6 +117,8 @@ function HotelResultPage() {
                 .then(response => response.json())
                 .then(data => {
                     setOffers(data);
+                    setOffersLoaded(true);
+
                 })
                 .catch(e => console.log(e));
         }
@@ -124,7 +133,7 @@ function HotelResultPage() {
             {validRequest &&
                 (<div style={{ textAlign: "center" }}>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <div style={{ width: "max(80vw, 900px)", marginTop: "15px", marginBottom: "15px", fontSize: "20px", textAlign: "left" }}><a href='/' style={{ color: "black", textDecoration: "none" }}><b>Overview</b></a> &gt; {!allResults && (<a href='' style={{ textDecoration: "none", color: "black" }}><b>Search results</b> &gt;</a>)} {hotel.hotelName}</div>
+                        <div style={{ width: "max(80vw, 900px)", marginTop: "15px", marginBottom: "15px", fontSize: "20px", textAlign: "left" }}><a href='/' style={{ color: "black", textDecoration: "none" }}><b>Overview</b></a> &gt; {!allResults && (<a href={"/search?" + queryParams.toString()} style={{ textDecoration: "none", color: "black" }}><b>Search results</b> &gt;</a>)} {hotel.hotelName}</div>
                     </div>
 
                     <Banner img={hotel.image} name={hotel.hotelName} stars={hotel.hotelStars} />
@@ -139,17 +148,23 @@ function HotelResultPage() {
                     </div>
 
 
-                    <div style={{ paddingTop: "30px", textAlign: "center", fontSize: "30px" }} id='offers' ref={offersRef}> {allResults ? <>All offers</> : <>Filtered offers</>} ({offers.length} results):</div>
+                    <div style={{ paddingTop: "30px", textAlign: "center", fontSize: "30px" }} id='offers' ref={offersRef}> {allResults ? <>All offers</> : <>Filtered offers</>}: {offersLoaded && (offers.length + " found")}</div>
                     <div style={{ marginTop: "30px", marginBottom: "30px", display: "flex", justifyContent: "center" }}>
-                        {offers.length === 0 && (
+                        {!offersLoaded && (
                             <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                         )}
-                        {offers.length > 0 && (
+                        {offersLoaded && offers.length > 0 && (
+                        <div>
                             <OffersOfHotel offers={offers.slice(20 * (site - 1), min(20 * site, offers.length))} />
+                            <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(offers.length / 20)} scrollRef={offersRef} />
+                        </div>
                         )
                         }
+                         {offersLoaded && offers.length === 0 && (
+                            <NoResultsFound />
+                        )}
                     </div>
-                    <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(offers.length / 20)} scrollRef={offersRef} />
+
                 </div>
                 )}
         </div>

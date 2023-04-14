@@ -1,10 +1,14 @@
 package de.florian.mallorcaservice.bookings;
 
+import de.florian.mallorcaservice.bookings.model.Booking;
+import de.florian.mallorcaservice.bookings.model.BookingRepository;
+import de.florian.mallorcaservice.offers.model.Offer;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -13,6 +17,7 @@ import java.util.UUID;
 public class BookingController {
 
     private BookingService bookingService;
+    private BookingRepository bookingRepository;
 
     @Deprecated
     @PostMapping(value = "/confirmation/{booking_id}")
@@ -35,4 +40,15 @@ public class BookingController {
     public ResponseEntity<Integer> getNumberBookingsHotel(@PathVariable("hotel_id") Long hotelId){
         return ResponseEntity.ok(bookingService.getNumberBookingsOfHotel(hotelId));
     }
+    @GetMapping(value = "/validate/{booking_id}")
+    public ResponseEntity<Void> validateOffer(@PathVariable("booking_id") UUID bookingId) {
+        final Optional<Booking> booking = bookingRepository.findByBookingId(bookingId);
+
+        if(booking.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -112,37 +112,41 @@ function ContextAwareToggle({ eventKey, callback }) {
 
 
 
-const SearchForm = ({ adults, children, label }) => {
+const SearchForm = ({ adults, children, label, duration, earliest_possible, latest_possible, has_pool, oceanview, max_price, min_stars, roomtypes, mealtypes, departure_airports, setResultsLoaded }) => {
 
     const navigate = useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         const form = event.target;
         const inputs = form.querySelectorAll('input, select');
-        
+
         // Convert form data to URLSearchParams object
         const params = new URLSearchParams();
         inputs.forEach((input) => {
-          if (input.name && input.value !== "Not choosen" && input.value !== "") {
-            if (input.nodeName === "SELECT" && input.multiple) {
-              for (let i = 0; i < input.selectedOptions.length; i++) {
-                params.append(input.name, input.selectedOptions[i].value);
-              }
-            } else {
-              params.append(input.name, input.value);
+            if (input.name && input.value !== "Not choosen" && input.value !== "") {
+                if (input.nodeName === "SELECT" && input.multiple) {
+                    for (let i = 0; i < input.selectedOptions.length; i++) {
+                        params.append(input.name, input.selectedOptions[i].value);
+                    }
+                } else {
+                    params.append(input.name, input.value);
+                }
             }
-          }
         });
-        
 
-        navigate(`/search?${params.toString()}`)
-    
-      };
-      
-      
-      
+        if (setResultsLoaded !== undefined) {
+            setResultsLoaded(false)
+        }
+
+        navigate(`/search?${params.toString()}`);
+        window.location.reload();
+
+    };
+
+
+
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
@@ -178,17 +182,17 @@ const SearchForm = ({ adults, children, label }) => {
                             <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Earliest start date</Form.Label>
-                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} defaultValue={"enter a date"} name='earliest_possible'/>
+                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"enter a date"} name='earliest_possible' defaultValue={earliest_possible} />
                                 </Form.Group>
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Latest end date</Form.Label>
-                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} defaultValue={"enter a date"} name='latest_possible' />
+                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"enter a date"} name='latest_possible' defaultValue={latest_possible} />
                                 </Form.Group>
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Duration in days</Form.Label>
-                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' />
+                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} />
                                 </Form.Group>
                             </div>
                         </Form.Group>
@@ -215,7 +219,7 @@ const SearchForm = ({ adults, children, label }) => {
                                                 <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Airports your trip can start from</Form.Label>
-                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='departure_airports'>
+                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='departure_airports' defaultValue={departure_airports}>
                                                             {airports.map((airport, index) => {
                                                                 return <option key={index} value={airport.code}>{airport.name}</option>
                                                             })}
@@ -234,7 +238,7 @@ const SearchForm = ({ adults, children, label }) => {
                                                 <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Swimming pool</Form.Label>
-                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='has_pool'>
+                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='has_pool' defaultValue={has_pool}>
                                                             <option>Not choosen</option>
                                                             <option value={true}>Swimming pool in hotel</option>
                                                             <option value={false}>No swimming pool in hotel</option>
@@ -244,7 +248,7 @@ const SearchForm = ({ adults, children, label }) => {
 
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Oceanview</Form.Label>
-                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='oceanview'>
+                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='oceanview' defaultValue={oceanview}>
                                                             <option>Not choosen</option>
                                                             <option value={true}>Room with oceanview</option>
                                                             <option value={false}>Room without oceanview</option>
@@ -253,7 +257,7 @@ const SearchForm = ({ adults, children, label }) => {
 
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Minimum hotel stars</Form.Label>
-                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='min_stars'>
+                                                        <Form.Select style={{ borderRadius: "0", minWidth: "250px" }} name='min_stars' defaultValue={min_stars}>
                                                             <option>Not choosen</option>
                                                             <option value={1}>One</option>
                                                             <option value={2}>Two</option>
@@ -263,13 +267,21 @@ const SearchForm = ({ adults, children, label }) => {
                                                         </Form.Select>
                                                     </Form.Group>
 
+                                                    {/* max price as double */}
+                                                    <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
+                                                        <Form.Label>Maximum price</Form.Label>
+                                                        <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a price' min={1} step="0.01" name='max_price' defaultValue={max_price} />
+                                                    </Form.Group>
+
+
+
                                                 </div>
 
                                                 <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap", marginTop: "15px" }}>
 
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Mealtypes</Form.Label>
-                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='mealtypes'>
+                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='mealtypes' defaultValue={mealtypes}>
                                                             {mealTypes.map((mealtype, index) => {
                                                                 return <option key={index} value={mealtype.code}>{mealtype.name}</option>
                                                             })}
@@ -278,7 +290,7 @@ const SearchForm = ({ adults, children, label }) => {
 
                                                     <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                                         <Form.Label>Roomtypes</Form.Label>
-                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='roomtypes'>
+                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='roomtypes' defaultValue={roomtypes}>
                                                             {roomTypes.map((roomtype, index) => {
                                                                 return <option key={index} value={roomtype.code}>{roomtype.name}</option>
                                                             })}
