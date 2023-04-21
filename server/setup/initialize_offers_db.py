@@ -27,10 +27,10 @@ mycursor = mydb.cursor()
 
 reader = csv.reader(content, delimiter=',', quotechar='"')
 
-# skip first row
-next(reader)
+for i in range(7_900_001):
+    next(reader)
 
-offer_id = 0
+offer_id = 7_900_001
 
 room = {
     "DOUBLE": 0,

@@ -1,7 +1,8 @@
+import './OffersOfHotel.css';
+
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { LazyLoadComponent, trackWindowScroll } from "react-lazy-load-image-component";
-import './OffersOfHotel.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowTrendUp, faDoorClosed, faPizzaSlice, faPlaneArrival, faPlaneDeparture, faWater } from "@fortawesome/free-solid-svg-icons";
 
@@ -39,8 +40,8 @@ const roomtypeImages = {
     DUPLEX: "https://images.pexels.com/photos/12918660/pexels-photo-12918660.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 }
 
-
-export const OfferCard = ({ offer, overview }) => {
+// representation of a offer as a card with details
+export const OfferCard = ({ offer, overview, duration }) => {
 
     // Get the departure and arrival date
     const departureDate = new Date(offer.outboundDepartureDateTime);
@@ -54,7 +55,7 @@ export const OfferCard = ({ offer, overview }) => {
                     {offer.countChildren > 0 && (<div style={{ marginTop: "8px" }}>Children: {offer.countChildren}</div>)}
                 </div>
                 <div style={{ textAlign: "right", width: "50%" }}>
-                    {dayDiff(departureDate, arrivalDate)} Days
+                    {duration !== undefined ? duration : dayDiff(departureDate, arrivalDate)} Days
                 </div>
             </Card.Header>
             <Card.Body style={{ padding: "25px" }}>
@@ -97,8 +98,8 @@ export const OfferCard = ({ offer, overview }) => {
 }
 
 
-
-const OffersOfHotel = ({ offers, scrollPosition }) => {
+// maps all offers to a card
+const OffersOfHotel = ({ offers, duration,scrollPosition }) => {
     return (
         <div>
             {offers.map((o, i) => {
@@ -108,7 +109,7 @@ const OffersOfHotel = ({ offers, scrollPosition }) => {
                             scrollPosition={scrollPosition}
                             style={{ height: "350px", width: "40vw" }}
                         >
-                            <OfferCard offer={o} overview={false} />
+                            <OfferCard offer={o} overview={false} duration={duration} />
                         </LazyLoadComponent>
                     </React.Fragment>
                 )

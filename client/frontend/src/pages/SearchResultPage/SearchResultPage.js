@@ -1,11 +1,11 @@
 import SearchForm from "../../components/search/SearchForm";
 import { useEffect, useRef, useState } from "react";
 import InvalidRequest from "../../components/general/InvalidRequest";
-import SearchResults from "../../components/search/SearchResults";
+import SearchResults, { SearchResultsPlaceholder } from "../../components/search/SearchResults";
 import SiteOrganizer from "../../components/general/SiteOrganizer";
 import NoResultsFound from "../../components/general/NoResultsFound";
 import { min } from "../../components/general/Math";
-import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,17 +21,26 @@ const SearchResultPage = () => {
 
     const queryParams = new URLSearchParams(window.location.search);
 
-    const count_adults = queryParams.get("count_adults");
-    const count_children = queryParams.get("count_children");
-    const latest_possible = queryParams.get("latest_possible");
-    const earliest_possible = queryParams.get("earliest_possible");
-    const duration = queryParams.get("duration");
+    const currentDate = new Date();
+    currentDate.setHours(1);
+    currentDate.setMinutes(0);
+    currentDate.setSeconds(0);
+    currentDate.setMilliseconds(0);
 
-    //optional
-    const max_price = queryParams.get("max_price");
-    const oceanview = queryParams.get("oceanview");
-    const has_pool = queryParams.get("has_pool");
-    const min_stars = queryParams.get("min_stars");
+    const {
+        //required when not all results should be shown
+        count_adults,
+        count_children,
+        latest_possible,
+        earliest_possible,
+        duration,
+
+        //optional
+        max_price,
+        oceanview,
+        has_pool,
+        min_stars,
+    } = Object.fromEntries(queryParams.entries());
 
     //arrays
     const roomtypes = queryParams.getAll("roomtypes");
@@ -135,7 +144,11 @@ const SearchResultPage = () => {
                                 <div style={{ display: "flex" }}>
                                     <div style={{ width: "calc(100% - 150px)", textAlign: "left" }}>
                                         <b>Search results:</b>
-                                        {resultsLoaded && (" " + results.length + " found")}
+                                        {resultsLoaded ? (" " + results.length + " found") : (
+                                            <Spinner animation="border" role="status" style={{marginLeft: "15px", borderWidth: "3px"}}>
+                                                <span className="visually-hidden">Loading...</span>
+                                            </Spinner>
+                                        )}
                                     </div>
 
                                     {/*dropdown for sorting*/}
@@ -168,12 +181,11 @@ const SearchResultPage = () => {
                                     )
 
                                 )
-                                    || (resultsLoaded && results.length === 0 && <NoResultsFound />)
+                                    || (resultsLoaded && results.length === 0 && <NoResultsFound msg={new Date(earliest_possible) < currentDate ? "You want to start your trip in the past?" : latest_possible < earliest_possible ? "You want to return even before starting your trip?" : undefined}/>)
                                 }
                                 {!resultsLoaded && (
                                     <div>
-                                        <br />
-                                        <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        <SearchResultsPlaceholder />
                                     </div>)
                                 }
                             </div>

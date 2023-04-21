@@ -1,3 +1,5 @@
+import "./OfferOverviewPage.css"
+
 import { useParams } from "react-router-dom";
 import { OfferCard } from "../../components/hotel-offer/OffersOfHotel";
 import { useEffect, useState } from "react";
@@ -8,7 +10,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
-import "./OfferOverviewPage.css"
 
 const OfferOverviewPage = () => {
     // Determine if screen width is over 1000 pixels

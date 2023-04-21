@@ -1,6 +1,9 @@
+import './LandingPage.css'
+
+import { Button } from 'react-bootstrap';
 import HotelRecommendations from '../../components/landing/HotelRecommendations';
 import SearchForm from '../../components/search/SearchForm';
-import './LandingPage.css'
+import MallorcaInfoBox from '../../components/landing/MallorcaInfoBox';
 
 const LandingPage = () => {
     return (
@@ -24,6 +27,12 @@ const LandingPage = () => {
 
             {/* section for search form */}
             <SearchForm adults={1} children={0} label={"Find your trip"}/>
+
+            <MallorcaInfoBox />
+
+            <div style={{width: "100%", background: "#005ea8", height: "100px", display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "60px",}}>
+                <Button href='/about' variant="outline-light" style={{ borderRadius: "0", width: "200px"}}>Learn more about the project</Button>
+            </div>
 
             {/* section for hotel recommendations */}
             <HotelRecommendations />

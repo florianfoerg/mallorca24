@@ -2,7 +2,6 @@ package de.florian.mallorcaservice.bookings;
 
 import de.florian.mallorcaservice.bookings.model.Booking;
 import de.florian.mallorcaservice.bookings.model.BookingRepository;
-import de.florian.mallorcaservice.offers.model.Offer;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -7,6 +7,8 @@ import OfferOverviewPage from "./pages/offer-overview-page/OfferOverviewPage";
 import ConfirmBookingPage from "./pages/confirm-booking-page/ConfirmBookingPage";
 import BookingSuccessPage from "./pages/booking-success-page/BookingSuccessPage";
 import SearchResultPage from "./pages/SearchResultPage/SearchResultPage";
+import Imprint from "./components/general/Imprint";
+import About from "./components/general/About";
 
 function App() {
   return (
@@ -20,8 +22,8 @@ function App() {
           <Route path="/offers/confirm-booking/:offer_id" element = {<><ConfirmBookingPage /></>}></Route>
           <Route path="/bookings/success/:booking_id" element = {<><BookingSuccessPage /></>}></Route>
           <Route path="/search" element = {<><SearchResultPage /></>}></Route>
-          <Route path="/imprint" element = {<></>}></Route>
-          <Route path="/about" element = {<></>}></Route>
+          <Route path="/imprint" element = {<><Imprint /></>}></Route>
+          <Route path="/about" element = {<><About /></>}></Route>
           <Route path="/" element = {<><LandingPage /></>}></Route>
           <Route path="*" element={<LandingPage />} />
         </Routes>

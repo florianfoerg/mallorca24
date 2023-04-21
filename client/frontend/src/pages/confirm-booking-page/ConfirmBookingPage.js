@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCashRegister, faPerson, faUmbrellaBeach } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
 
+// function to book an offer
 async function bookOffer(email, offer_id, navigate, setValidRequest) {
     try {
         const response = await fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/bookings/booking/${offer_id}?email=${email}`, {

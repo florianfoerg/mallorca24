@@ -1,5 +1,6 @@
-import { faDog, faPersonSwimming, faWifi } from '@fortawesome/free-solid-svg-icons';
 import './HotelCharacteristicsIcons.css';
+
+import { faDog, faPersonSwimming, faWifi } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const HotelCharacteristicsIcons = ({ has_pool, free_wifi, pets_allowed }) => {

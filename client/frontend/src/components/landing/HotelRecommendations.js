@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Spinner } from 'react-bootstrap';
 import { Rating } from 'react-simple-star-rating';
 import { faCity, faDog, faPersonSwimming, faPlane, faUmbrellaBeach, faWifi } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const HotelRecommendationCard = ({ name, img, stars, id, idx, has_pool, close_to_centre, close_to_beach, pets_allowed, free_wifi, close_to_airport }) => {
     return (
         <Card style={{ width: '18rem', borderRadius: "0", boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)" }}>
-            <Card.Img variant="top" src={img} style={{ borderRadius: "0", height: "200px" }} alt={'image '+ name} />
+            <Card.Img variant="top" src={img} style={{ borderRadius: "0", height: "200px" }} alt={'image ' + name} />
             <Card.Body>
                 <div>{idx}.</div>
                 <Card.Title style={{ marginTop: "10px" }}>
@@ -55,7 +55,9 @@ const HotelRecommendations = () => {
             <h1>Today's recommendations:</h1>
             <div style={{ marginTop: "30px" }}>
                 {recommendations.length === 0 && (
-                    <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <Spinner animation="border" role="status" style={{ marginLeft: "15px", borderWidth: "3px" }}>
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
                 )}
                 <div style={{ display: "flex", flexWrap: "wrap", marginLeft: "max(50px, 15vw)", marginRight: "max(50px,15vw)", justifyContent: "center" }}>
                     {recommendations.length > 0 && (

@@ -1,7 +1,8 @@
+import './HotelOverviewCard.css'
+
 import { Card } from "react-bootstrap";
 import HotelCharacteristicsIcons from "../hotel-offer/HotelCharacteristicsIcons";
 import { Rating } from "react-simple-star-rating";
-import './HotelOverviewCard.css'
 import { dayDiff } from "../hotel-offer/OffersOfHotel";
 
 // This component displays a summary card for a hotel offer.

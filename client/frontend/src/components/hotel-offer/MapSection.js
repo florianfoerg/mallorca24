@@ -1,8 +1,8 @@
-import React from 'react'
+import "./Map.css";
 
+import React from 'react';
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "./Map.css";
 import L from "leaflet";
 
 // map marker
@@ -14,7 +14,7 @@ function mapMarker(marker) {
 }
 
 
-// Startpoint of map
+// startpoint of map
 const center = {
     lat: 39.613342,
     lng: 2.956849
@@ -22,7 +22,7 @@ const center = {
 
 const MapSection = ({ name, marker }) => {
 
-
+    // custom marker icon
     const markerIcon = L.icon({
         iconSize: [30, 45],
         iconAnchor: [10, 41],

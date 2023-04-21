@@ -46,7 +46,6 @@ public class OfferController {
 
     @PostMapping(value = "/offersFiltered")
     public ResponseEntity<List<HotelOverviewDTO>> getFilteredOffers(@RequestBody FilteredRequest filters) {
-        System.out.println(filters);
         return ResponseEntity.ok(offerService.getOffersFiltered(filters));
     }
 

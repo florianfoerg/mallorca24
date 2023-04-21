@@ -3,11 +3,12 @@ import { useLocation, useParams } from "react-router-dom";
 import InvalidRequest from '../../components/general/InvalidRequest';
 import HotelCharacteristicsIcons from '../../components/hotel-offer/HotelCharacteristicsIcons';
 import OffersOfHotel from '../../components/hotel-offer/OffersOfHotel';
-import Banner from '../../components/hotel-offer/Banner';
+import HotelBanner from '../../components/hotel-offer/HotelBanner';
 import SiteOrganizer from '../../components/general/SiteOrganizer';
 import LocationComp from '../../components/hotel-offer/LocationComp';
 import { min } from '../../components/general/Math';
 import NoResultsFound from '../../components/general/NoResultsFound';
+import { Spinner } from 'react-bootstrap';
 
 
 function HotelResultPage() {
@@ -136,7 +137,7 @@ function HotelResultPage() {
                         <div style={{ width: "max(80vw, 900px)", marginTop: "15px", marginBottom: "15px", fontSize: "20px", textAlign: "left" }}><a href='/' style={{ color: "black", textDecoration: "none" }}><b>Overview</b></a> &gt; {!allResults && (<a href={"/search?" + queryParams.toString()} style={{ textDecoration: "none", color: "black" }}><b>Search results</b> &gt;</a>)} {hotel.hotelName}</div>
                     </div>
 
-                    <Banner img={hotel.image} name={hotel.hotelName} stars={hotel.hotelStars} />
+                    <HotelBanner img={hotel.image} name={hotel.hotelName} stars={hotel.hotelStars} />
                     <div style={{ marginTop: "30px", fontSize: "20px" }}>On Mallorca24 <b><u>{amountBookings}</u></b> offers of this hotel have already been booked!</div>
                     <HotelCharacteristicsIcons has_pool={hotel.hasPool} free_wifi={hotel.freeWifi} pets_allowed={hotel.petsAllowed} />
 
@@ -151,16 +152,18 @@ function HotelResultPage() {
                     <div style={{ paddingTop: "30px", textAlign: "center", fontSize: "30px" }} id='offers' ref={offersRef}> {allResults ? <>All offers</> : <>Filtered offers</>}: {offersLoaded && (offers.length + " found")}</div>
                     <div style={{ marginTop: "30px", marginBottom: "30px", display: "flex", justifyContent: "center" }}>
                         {!offersLoaded && (
-                            <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                            <Spinner animation="border" role="status" style={{ marginLeft: "15px", borderWidth: "3px" }}>
+                                <span className="visually-hidden">Loading...</span>
+                            </Spinner>
                         )}
                         {offersLoaded && offers.length > 0 && (
-                        <div>
-                            <OffersOfHotel offers={offers.slice(20 * (site - 1), min(20 * site, offers.length))} />
-                            <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(offers.length / 20)} scrollRef={offersRef} />
-                        </div>
+                            <div>
+                                <OffersOfHotel offers={offers.slice(20 * (site - 1), min(20 * site, offers.length))} duration={duration !== undefined ? duration : undefined} />
+                                <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(offers.length / 20)} scrollRef={offersRef} />
+                            </div>
                         )
                         }
-                         {offersLoaded && offers.length === 0 && (
+                        {offersLoaded && offers.length === 0 && (
                             <NoResultsFound />
                         )}
                     </div>

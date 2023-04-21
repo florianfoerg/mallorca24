@@ -59,8 +59,6 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
-
-        System.out.println("a");
         List<Offer> offers;
 
 
@@ -93,7 +91,6 @@ public class OfferService {
                     filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
         }
 
-        System.out.println("b");
 
         if (filters.getFilter().contains(RequestFilter.STARS)) {
             offers.removeIf(offer -> filters.getMinStars() > offer.getHotel().getHotelStars());

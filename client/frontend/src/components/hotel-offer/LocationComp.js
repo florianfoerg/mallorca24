@@ -1,6 +1,6 @@
-import React from 'react';
 import './LocationComp.css';
 
+import React from 'react';
 import MapSection from './MapSection'; // import MapSection component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // import fontawesome icons
 import { faUmbrellaBeach, faCity, faPlane, faCheck } from '@fortawesome/free-solid-svg-icons'; // import required fontawesome icons

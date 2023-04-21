@@ -1,59 +1,62 @@
-import { useContext } from 'react';
 import './SearchForm.css'
+
+import { useContext } from 'react';
 import { Accordion, AccordionContext, Button, Card, Form, useAccordionButton } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faCalendar, faHouse, faPerson, faPlane } from '@fortawesome/free-solid-svg-icons';
 
-
-
+// easy way to map codes and names
 const airports = [
     { name: 'Amsterdam', code: 'AMS' },
-    { name: 'Basel/Mulhouse', code: 'BSL' },
+    { name: 'Berlin', code: 'BER' },
     { name: 'Billund', code: 'BLL' },
+    { name: 'Basel/Mulhouse', code: 'BSL' },
     { name: 'Bremen', code: 'BRE' },
+    { name: 'Bern', code: 'BRN' },
     { name: 'Brussels', code: 'BRU' },
-    { name: 'Brussels South Charleroi', code: 'CRL' },
     { name: 'Cologne', code: 'CGN' },
-    { name: 'Dortmund', code: 'DTM' },
+    { name: 'Brussels South Charleroi', code: 'CRL' },
+    { name: 'Magdeburg Cochstedt', code: 'CSO' },
     { name: 'Dresden', code: 'DRS' },
+    { name: 'Dortmund', code: 'DTM' },
     { name: 'Düsseldorf', code: 'DUS' },
     { name: 'Eindhoven', code: 'EIN' },
     { name: 'Erfurt', code: 'ERF' },
+    { name: 'Karlsruhe/Baden-Baden', code: 'FKB' },
+    { name: 'Memmingen', code: 'FMM' },
+    { name: 'Münster', code: 'FMO' },
     { name: 'Frankfurt', code: 'FRA' },
     { name: 'Friedrichshafen', code: 'FDH' },
-    { name: 'Karlsruhe/Baden-Baden', code: 'FKB' },
-    { name: 'Geneva', code: 'GVA' },
     { name: 'Graz', code: 'GRZ' },
-    { name: 'Groningen', code: 'GRQ' },
+    { name: 'Geneva', code: 'GVA' },
+    { name: 'Sylt', code: 'GWT' },
     { name: 'Hanover', code: 'HAJ' },
     { name: 'Hamburg', code: 'HAM' },
     { name: 'Hahn', code: 'HHN' },
     { name: 'Innsbruck', code: 'INN' },
-    { name: 'Kassel', code: 'KSF' },
     { name: 'Klagenfurt', code: 'KLU' },
+    { name: 'Krakow', code: 'KRK' },
+    { name: 'Kassel', code: 'KSF' },
+    { name: 'Lübeck', code: 'LBC' },
     { name: 'Leipzig', code: 'LEJ' },
     { name: 'Linz', code: 'LNZ' },
-    { name: 'Lübeck', code: 'LBC' },
     { name: 'Luxembourg', code: 'LUX' },
-    { name: 'Magdeburg Cochstedt', code: 'CSO' },
     { name: 'Munich', code: 'MUC' },
-    { name: 'Münster', code: 'FMO' },
-    { name: 'Memmingen', code: 'FMM' },
+    { name: 'Weeze', code: 'NRN' },
     { name: 'Nuremberg', code: 'NUE' },
     { name: 'Paderborn', code: 'PAD' },
     { name: 'Prague', code: 'PRG' },
     { name: 'Rostock-Laage', code: 'RLG' },
     { name: 'Saarbrücken', code: 'SCN' },
+    { name: 'Strasbourg', code: 'SXB' },
+    { name: 'Stuttgart', code: 'STR' },
     { name: 'Salzburg', code: 'SZG' },
-    { name: 'Strasbourg', code: 'STR' },
-    { name: 'Strasbourg Entzheim', code: 'SXB' },
-    { name: 'Sylt', code: 'GWT' },
     { name: 'Vienna', code: 'VIE' },
     { name: 'Warsaw', code: 'WAW' },
-    { name: 'Weeze', code: 'NRN' },
     { name: 'Zürich', code: 'ZRH' }
-]
+];
+
 
 const mealTypes = [
     { code: 'ACCORDINGDESCRIPTION', name: 'According to Description' },
@@ -89,7 +92,7 @@ const roomTypes = [
 ];
 
 
-
+// component to turn advanced search on/off
 function ContextAwareToggle({ eventKey, callback }) {
     const { activeEventKey } = useContext(AccordionContext);
 
@@ -111,9 +114,8 @@ function ContextAwareToggle({ eventKey, callback }) {
 }
 
 
-
+// component to display the search form
 const SearchForm = ({ adults, children, label, duration, earliest_possible, latest_possible, has_pool, oceanview, max_price, min_stars, roomtypes, mealtypes, departure_airports, setResultsLoaded }) => {
-
     const navigate = useNavigate()
 
     const handleSubmit = (event) => {
