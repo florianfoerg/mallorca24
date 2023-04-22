@@ -119,9 +119,10 @@ function HotelResultPage() {
                 .then(data => {
                     setOffers(data);
                     setOffersLoaded(true);
-
                 })
-                .catch(e => console.log(e));
+                .catch(() => {
+                    setValidRequest(false);
+                    });
         }
     }, [count_adults, count_children, duration, latest_possible, earliest_possible, hotel_id, allResults]);
 

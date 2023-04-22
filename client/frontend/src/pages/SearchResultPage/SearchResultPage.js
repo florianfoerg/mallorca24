@@ -76,11 +76,14 @@ const SearchResultPage = () => {
 
     const relevanceTooltip = (
         <Tooltip id="relevance-tooltip">
-            Sort by relevance based on hotel stars, clicks, booking rate, and number of offers
+            Sort by relevance based on hotel stars, clicks and booking rate
         </Tooltip>
     );
 
+
     useEffect(() => {
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         if (count_adults === undefined || count_children === undefined || duration === undefined || latest_possible === undefined || earliest_possible === undefined) {
             setValidRequest(true);
@@ -127,6 +130,7 @@ const SearchResultPage = () => {
                 );
         }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -145,7 +149,7 @@ const SearchResultPage = () => {
                                     <div style={{ width: "calc(100% - 150px)", textAlign: "left" }}>
                                         <b>Search results:</b>
                                         {resultsLoaded ? (" " + results.length + " found") : (
-                                            <Spinner animation="border" role="status" style={{marginLeft: "15px", borderWidth: "3px"}}>
+                                            <Spinner animation="border" role="status" style={{ marginLeft: "15px", borderWidth: "3px" }}>
                                                 <span className="visually-hidden">Loading...</span>
                                             </Spinner>
                                         )}
@@ -176,12 +180,14 @@ const SearchResultPage = () => {
                                     results.length > 0 &&
                                     (<div>
                                         <SearchResults results={results.slice(20 * (site - 1), min(20 * site, results.length))} queryParams={queryParams.toString()} />
-                                        <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(results.length / 20)} scrollRef={resultsRef} />
+                                        <div style={{ marginTop: "15px" }}>
+                                            <SiteOrganizer setSite={setSite} site={site} amountSites={Math.ceil(results.length / 20)} scrollRef={resultsRef} />
+                                        </div>
                                     </div>
                                     )
 
                                 )
-                                    || (resultsLoaded && results.length === 0 && <NoResultsFound msg={new Date(earliest_possible) < currentDate ? "You want to start your trip in the past?" : latest_possible < earliest_possible ? "You want to return even before starting your trip?" : undefined}/>)
+                                    || (resultsLoaded && results.length === 0 && <NoResultsFound msg={new Date(earliest_possible) < currentDate ? "You want to start your trip in the past?" : latest_possible < earliest_possible ? "You want to return even before starting your trip?" : undefined} />)
                                 }
                                 {!resultsLoaded && (
                                     <div>

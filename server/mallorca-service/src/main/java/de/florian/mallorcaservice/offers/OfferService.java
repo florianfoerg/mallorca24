@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -45,93 +44,8 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<OfferDTO> getOffersOfHotelFiltered(final FilteredRequest filters, Hotel hotel) {
-        List<Offer> offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotel(filters.getCountAdults(),
-                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel);
-
-        return filterOffersCharacteristics(filters, offers).stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
-    }
-
-    /**
-     * Returns a list of offers filtered by the given request filters.
-     *
-     * @param filters the filters to apply to the offers
-     * @return a list of offers matching the given filters
-     */
-    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
-    public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
-        List<Offer> offers;
-
-
-        if (filters.getFilter().contains(RequestFilter.AIRPORT)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndOutboundDepartureAirportIn(filters.getCountAdults(),
-                    filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getDepartureAirports());
-            filters.getFilter().remove(RequestFilter.AIRPORT);
-
-
-        } else if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndMealtypeIn(filters.getCountAdults(),
-                    filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMealtypes());
-            filters.getFilter().remove(RequestFilter.MEALTYPE);
-
-
-        } else if (filters.getFilter().contains(RequestFilter.STARS)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndHotelHotelStarsGreaterThanEqual(filters.getCountAdults(),
-                    filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMinStars());
-            filters.getFilter().remove(RequestFilter.STARS);
-
-
-        } else if (filters.getFilter().contains(RequestFilter.PRICE)) {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBeforeAndPriceLessThanEqual(filters.getCountAdults(),
-                    filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), filters.getMaxPrice());
-            filters.getFilter().remove(RequestFilter.PRICE);
-
-
-        } else {
-            offers = offerRepository.findByCountAdultsAndCountChildrenAndOutboundDepartureDateTimeAfterAndInboundDepartureDateTimeBefore(filters.getCountAdults(),
-                    filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible());
-        }
-
-
-        if (filters.getFilter().contains(RequestFilter.STARS)) {
-            offers.removeIf(offer -> filters.getMinStars() > offer.getHotel().getHotelStars());
-        }
-
-        if (filters.getFilter().contains(RequestFilter.POOL)) {
-            offers.removeIf(offer -> filters.getHasPool() != offer.getHotel().getHasPool());
-        }
-
-        offers = filterOffersCharacteristics(filters, offers);
-
-        List<Offer> minPriceOffers = offers.stream()
-                .collect(Collectors.groupingBy(
-                        offer -> offer.getHotel().getHotelId(),
-                        Collectors.minBy(Comparator.comparing(Offer::getPrice))))
-                .values()
-                .stream()
-                .map(Optional::get)
-                .collect(Collectors.toList());
-
-
-        final List<Offer> finalOffers = offers;
-
-        return minPriceOffers.stream().map(o -> new HotelOverviewDTO(o, finalOffers, bookingService)).toList();
-    }
-
-    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
-    public List<OfferDTO> getOffersOfHotel(Hotel hotel) {
-        List<Offer> offers = offerRepository.findByHotel(hotel);
-
-        return offers.stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
-    }
-
-    /**
-     * Filters the given list of offers by the characteristics specified in the given request filters.
-     *
-     * @param filters the filters to apply to the offers
-     * @param offers  the list of offers to filter
-     * @return a list of offers matching the given filters
-     */
-    private static List<Offer> filterOffersCharacteristics(FilteredRequest filters, List<Offer> offers) {
+        List<Offer> offers = offerRepository.findByArgsAndHotel(filters.getCountAdults(),
+                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(), hotel.getHotelId(), filters.getDuration());
 
         if (filters.getFilter().contains(RequestFilter.MEALTYPE)) {
             offers.removeIf(offer -> !filters.getMealtypes().contains(offer.getMealtype()));
@@ -153,9 +67,63 @@ public class OfferService {
             offers.removeIf(offer -> !filters.getDepartureAirports().contains(offer.getOutboundDepartureAirport()));
         }
 
-        offers.removeIf(offer -> ChronoUnit.DAYS.between(offer.getOutboundDepartureDateTime(), offer.getInboundDepartureDateTime()) + 1 != filters.getDuration());
 
-        return offers;
+        return offers.stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
+    }
+
+    /**
+     * Returns a list of offers filtered by the given request filters.
+     *
+     * @param filters the filters to apply to the offers
+     * @return a list of offers matching the given filters
+     */
+    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
+    public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
+
+        List<MinOfferWrapper> offers = offerRepository.findMinAllArgs(filters.getCountAdults(),
+                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(),
+                filters.getFilter().contains(RequestFilter.AIRPORT), filters.getDepartureAirports(),
+                filters.getFilter().contains(RequestFilter.MEALTYPE), filters.getMealtypes(),
+                filters.getFilter().contains(RequestFilter.ROOMTYPE), filters.getRoomtypes(),
+                filters.getFilter().contains(RequestFilter.OCEANVIEW), filters.getOceanview(),
+                filters.getDuration()
+        );
+
+        List<HotelOverviewDTO> offerOverviews = new ArrayList<>();
+
+        for (MinOfferWrapper offer : offers) {
+            HotelOverviewDTO hotelOverviewDTO = new HotelOverviewDTO(
+                    hotelRepository,
+                    bookingService,
+                    offer.getHotelId(),
+                    offer.getMinPrice()
+            );
+            offerOverviews.add(hotelOverviewDTO);
+        }
+
+
+        // can be filtered after database query because unique for each hotel
+        if (filters.getFilter().contains(RequestFilter.STARS)) {
+            offerOverviews.removeIf(offer -> filters.getMinStars() > offer.getHotelStars());
+        }
+
+        if (filters.getFilter().contains(RequestFilter.POOL)) {
+            offerOverviews.removeIf(offer -> filters.getHasPool() != offer.getHasPool());
+        }
+
+        if (filters.getFilter().contains(RequestFilter.PRICE)) {
+            offerOverviews.removeIf(offer -> offer.getMinPrice() > filters.getMaxPrice());
+        }
+
+
+        return offerOverviews;
+    }
+
+    @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
+    public List<OfferDTO> getOffersOfHotel(Hotel hotel) {
+        List<Offer> offers = offerRepository.findByHotel(hotel);
+
+        return offers.stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
     }
 
 }

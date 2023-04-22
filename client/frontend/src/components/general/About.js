@@ -20,17 +20,17 @@ const About = () => {
                 Technologies used: <br />
 
                 <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
-                    <ul style={{ textAlign: "left" }}>
+                    <div style={{ textAlign: "left" }}>
                         <b>Frontend</b>
                         <li>React</li>
                         <li>JavaScript</li>
                         <li>HTML</li>
                         <li>CSS</li>
                         <li>Bootstrap</li>
-                    </ul>
+                    </div>
                     <br />
 
-                    <ul style={{ textAlign: "left", marginLeft: "50px" }}>
+                    <div style={{ textAlign: "left", marginLeft: "50px" }}>
 
                         <b>Backend:</b>
                         <li>Java</li>
@@ -38,7 +38,7 @@ const About = () => {
                         <li>Spring Framework</li>
                         <li>MySQL</li>
                         <br />
-                    </ul>
+                    </div>
 
                 </div>
 

@@ -1,6 +1,6 @@
 import './SearchForm.css'
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Accordion, AccordionContext, Button, Card, Form, useAccordionButton } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,6 +48,7 @@ const airports = [
     { name: 'Paderborn', code: 'PAD' },
     { name: 'Prague', code: 'PRG' },
     { name: 'Rostock-Laage', code: 'RLG' },
+    { name: "Rotterdam", code: "RTM" },
     { name: 'Saarbrücken', code: 'SCN' },
     { name: 'Strasbourg', code: 'SXB' },
     { name: 'Stuttgart', code: 'STR' },
@@ -117,6 +118,8 @@ function ContextAwareToggle({ eventKey, callback }) {
 // component to display the search form
 const SearchForm = ({ adults, children, label, duration, earliest_possible, latest_possible, has_pool, oceanview, max_price, min_stars, roomtypes, mealtypes, departure_airports, setResultsLoaded }) => {
     const navigate = useNavigate()
+    const [startDate, setStartDate] = useState(earliest_possible);
+    const [endDate, setEndDate] = useState(latest_possible);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -137,6 +140,7 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
                 }
             }
         });
+
 
         if (setResultsLoaded !== undefined) {
             setResultsLoaded(false)
@@ -184,18 +188,36 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
                             <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Earliest start date</Form.Label>
-                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"enter a date"} name='earliest_possible' defaultValue={earliest_possible} />
+                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"Enter a date"} name='earliest_possible' defaultValue={earliest_possible} min={new Date().toISOString().split('T')[0]} onChange={e => setStartDate(e.target.value)}/>
                                 </Form.Group>
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Latest end date</Form.Label>
-                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"enter a date"} name='latest_possible' defaultValue={latest_possible} />
+                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"Enter a date"} name='latest_possible' defaultValue={latest_possible} min={startDate === undefined ? undefined : startDate} disabled={startDate === undefined} onChange={e => setEndDate(e.target.value)} />
                                 </Form.Group>
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Duration in days</Form.Label>
-                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} />
+                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} disabled={endDate === undefined} max={1 + (Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)))}/>
                                 </Form.Group>
+                            </div>
+                        </Form.Group>
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "center", width: "100%", marginTop: "15px" }}>
+                        <Form.Group style={{ width: "100%" }}>
+                            <Form.Label style={{ fontSize: "20px", textAlign: "left", display: "flex", width: "100%" }}><b>Where do you want to travel from? <FontAwesomeIcon icon={faPlane} /></b> </Form.Label>
+
+                            <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
+                                <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
+                                    <Form.Label>Airports your trip can start from</Form.Label>
+                                    <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='departure_airports' defaultValue={departure_airports} required={true}>
+                                        {airports.map((airport, index) => {
+                                            return <option key={index} value={airport.code}>{airport.name}</option>
+                                        })}
+                                    </Form.Select>
+                                </Form.Group>
+
                             </div>
                         </Form.Group>
                     </div>
@@ -213,26 +235,6 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
                                 <Accordion.Collapse eventKey="1" style={{ width: "100%" }}>
 
                                     <div>
-
-                                        <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                                            <Form.Group style={{ width: "100%" }}>
-                                                <Form.Label style={{ fontSize: "20px", textAlign: "left", display: "flex", width: "100%" }}><b>Where do you want to travel from?* <FontAwesomeIcon icon={faPlane} /></b> </Form.Label>
-
-                                                <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
-                                                    <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
-                                                        <Form.Label>Airports your trip can start from</Form.Label>
-                                                        <Form.Select multiple={true} style={{ borderRadius: "0", minWidth: "250px" }} name='departure_airports' defaultValue={departure_airports}>
-                                                            {airports.map((airport, index) => {
-                                                                return <option key={index} value={airport.code}>{airport.name}</option>
-                                                            })}
-                                                        </Form.Select>
-                                                    </Form.Group>
-
-                                                </div>
-                                            </Form.Group>
-                                        </div>
-
-
                                         <div style={{ display: "flex", justifyContent: "center", width: "100%", marginTop: "15px" }}>
                                             <Form.Group style={{ width: "100%" }}>
                                                 <Form.Label style={{ fontSize: "20px", textAlign: "left", display: "flex", width: "100%" }}><b>What about other wishes?* <FontAwesomeIcon icon={faHouse} /></b></Form.Label>

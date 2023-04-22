@@ -24,11 +24,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    implementation 'org.postgresql:postgresql:42.5.4'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    implementation 'org.eclipse.persistence:eclipselink:4.0.1'
+    implementation 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:4.0.1'
 }
 
 tasks.named('test') {

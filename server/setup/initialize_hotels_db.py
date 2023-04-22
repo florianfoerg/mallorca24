@@ -1,7 +1,8 @@
 import csv
-import mysql.connector
+import psycopg2
 import requests
 import random
+import math
 
 # function to create random latidude in the range of Mallorca
 def random_lat():
@@ -60,10 +61,10 @@ images = [
     "https://images.pexels.com/photos/3155666/pexels-photo-3155666.jpeg?auto=compress&cs=tinysrgb&w=1800&h=1000&dpr=1"
 ]
 
-# connect to the MySQL database
-mydb = mysql.connector.connect(
+# connect to the PostgrSQL database
+mydb = psycopg2.connect(
     host="localhost",
-    user="root",
+    user="postgres",
     password="password",
     database="mallorca-db"
 )
@@ -90,7 +91,7 @@ for row in reader:
     # construct the SQL query to insert a new tuple into the hotels table
     sql = "INSERT INTO hotels (hotel_id, hotel_name, hotel_stars, image, mail, has_pool, pets_allowed, free_wifi, distance_next_airport, distance_next_beach, distance_centre, clicks, latitude, longitude, description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     # execute the SQL query with the values from the current row
-    mycursor.execute(sql, (hotel_id, hotel_name, hotel_stars, hotel_image, "mail@hotel.com", random.random() < 0.5, random.random() < 0.3, random.random() < 0.9, distance_next_airport, distance_next_beach, distance_centre, 0, random_lat(), random_long(), random_desc(distance_next_beach, distance_next_airport, distance_centre, hotel_stars)))
+    mycursor.execute(sql, (hotel_id, hotel_name, int(math.ceil(float(hotel_stars))), hotel_image, "mail@hotel.com", random.random() < 0.5, random.random() < 0.3, random.random() < 0.9, distance_next_airport, distance_next_beach, distance_centre, 0, random_lat(), random_long(), random_desc(distance_next_beach, distance_next_airport, distance_centre, hotel_stars)))
     # commit the changes to the database
     mydb.commit()
 

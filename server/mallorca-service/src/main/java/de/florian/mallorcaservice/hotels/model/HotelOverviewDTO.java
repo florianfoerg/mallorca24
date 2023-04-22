@@ -1,16 +1,15 @@
 package de.florian.mallorcaservice.hotels.model;
 
 import de.florian.mallorcaservice.bookings.BookingService;
-import de.florian.mallorcaservice.offers.model.Offer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.Mapping;
-
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 @NoArgsConstructor
 @Data
+@Component
 public class HotelOverviewDTO {
+
     private Long hotelId;
     private String hotelName;
     private String image;
@@ -25,43 +24,40 @@ public class HotelOverviewDTO {
     private Double relevance;
 
 
-    private static Double computeRelevance(final Hotel hotel, final List<Offer> listOffers, final BookingService bookingService) {
+    private static Double computeRelevance(final Hotel hotel, final BookingService bookingService) {
         final Double rankingStars = (double)hotel.getHotelStars();
         final Double rankingClicks = (double)hotel.getClicks();
         final Double bookingRate = ((double)bookingService.getNumberBookingsOfHotel(hotel.getHotelId()) / (hotel.getClicks() + 1.00));
-        final Double amountOffers = (double)listOffers.stream().parallel().filter(o -> o.getHotel().equals(hotel)).toList().size();
 
         // Define the weights for each factor
-        final Double weightStars = 0.25;
-        final Double weightClicks = 0.05;
-        final Double weightBookingRate = 0.65;
-        final Double weightAmountOffers = 0.05;
+        final Double weightStars = 0.20;
+        final Double weightClicks = 0.075;
+        final Double weightBookingRate = 0.725 * 3;
 
         // Compute the weighted average of each factor
 
         return weightStars * rankingStars +
                 weightClicks * rankingClicks +
-                weightBookingRate * bookingRate +
-                weightAmountOffers * amountOffers;
+                weightBookingRate * bookingRate;
     }
 
 
-    public HotelOverviewDTO(final Offer offer, final List<Offer> listOffers, final BookingService bookingService) {
+    public HotelOverviewDTO(final HotelRepository hotelRepository, final BookingService bookingService,final Long hotelId, final Double price) {
 
-        final Hotel hotel = offer.getHotel();
+        final Hotel hotel = hotelRepository.getReferenceById(hotelId);
 
         this.hotelId = hotel.getHotelId();
         this.hotelName = hotel.getHotelName();
         this.image = hotel.getImage();
         this.hotelStars = hotel.getHotelStars();
-        this.minPrice = offer.getPrice();
+        this.minPrice = price;
         this.hasPool = hotel.getHasPool();
         this.petsAllowed = hotel.getPetsAllowed();
         this.freeWifi = hotel.getFreeWifi();
         this.closeToAirport = hotel.getDistanceNextAirport() < 20;
         this.closeToCentre = hotel.getDistanceCentre() < 4000;
         this.closeToBeach = hotel.getDistanceNextBeach() < 2000;
-        this.relevance = computeRelevance(hotel, listOffers, bookingService);
+        this.relevance = computeRelevance(hotel, bookingService);
 
     }
 }

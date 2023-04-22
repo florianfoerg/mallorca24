@@ -1,5 +1,5 @@
 import csv
-import mysql.connector
+import psycopg2
 from datetime import datetime
 
 
@@ -15,9 +15,9 @@ def convert_date(date):
 content = open('offers.csv')
 
 # connect to the MySQL database
-mydb = mysql.connector.connect(
+mydb = psycopg2.connect(
     host="localhost",
-    user="root",
+    user="postgres",
     password="password",
     database="mallorca-db"
 )
@@ -26,8 +26,11 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 reader = csv.reader(content, delimiter=',', quotechar='"')
+next(reader)
 
-for i in range(7_900_001):
+start = 0
+
+for i in range(start):
     next(reader)
 
 offer_id = 7_900_001
@@ -55,53 +58,54 @@ room = {
 }
 
 airport = {
-    "FMO": 0,
-    "STR": 1,
-    "HAM": 2,
-    "LEJ": 3,
-    "NUE": 4,
-    "CGN": 5,
-    "FRA": 6,
-    "PAD": 7,
-    "BER": 8,
-    "FMM": 9,
-    "DUS": 10,
-    "SCN": 11,
-    "MUC": 12,
-    "DTM": 13,
-    "DRS": 14,
-    "BRE": 15,
-    "VIE": 16,
-    "NRN": 17,
-    "FKB": 18,
-    "ZRH": 19,
-    "BSL": 20,
-    "HAJ": 21,
-    "AMS": 22,
-    "FDH": 23,
-    "LBC": 24,
+    "AMS": 0,
+    "BER": 1,
+    "BLL": 2,
+    "BSL": 3,
+    "BRE": 4,
+    "BRN": 5,
+    "BRU": 6,
+    "CGN": 7,
+    "CRL": 8,
+    "CSO": 9,
+    "DRS": 10,
+    "DTM": 11,
+    "DUS": 12,
+    "EIN": 13,
+    "ERF": 14,
+    "FKB": 15,
+    "FMM": 16,
+    "FMO": 17,
+    "FRA": 18,
+    "FDH": 19,
+    "GRZ": 20,
+    "GVA": 21,
+    "GWT": 22,
+    "HAJ": 23,
+    "HAM": 24,
     "HHN": 25,
-    "SZG": 26,
-    "LUX": 27,
-    "PRG": 28,
-    "INN": 29,
-    "KSF": 30,
-    "LNZ": 31,
-    "EIN": 32,
-    "SXB": 33,
-    "BLL": 34,
-    "BRU": 35,
-    "GRZ": 36,
-    "GWT": 37,
-    "CRL": 38,
-    "CSO": 39,
-    "WAW": 40,
-    "GVA": 41,
-    "ERF": 42,
-    "KRK": 43,
-    "BRN": 44,
-    "RLG": 45, 
-    "KLU": 46
+    "INN": 26,
+    "KLU": 27,
+    "KRK": 28,
+    "KSF": 29,
+    "LBC": 30,
+    "LEJ": 31,
+    "LNZ": 32,
+    "LUX": 33,
+    "MUC": 34,
+    "NRN": 35,
+    "NUE": 36,
+    "PAD": 37,
+    "PRG": 38,
+    "RLG": 39,
+    "RTM": 40,
+    "SCN": 41,
+    "SXB": 42,
+    "STR": 43,
+    "SZG": 44,
+    "VIE": 45,
+    "WAW": 46,
+    "ZRH": 47,
 }
 
 meal = {
@@ -137,15 +141,14 @@ for row in reader:
     roomtype = room[row[14]]
     hotel_id = row[0]
 
-    
     # execute the SQL query with the values from the current row
     mycursor.execute(sql, (offer_id, count_adults, count_children, inbound_departure_date_time,
                      mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id))
-    
-    if offer_id % 100000 == 0:
+
+    if offer_id % 200000 == 0:
         mydb.commit()
 
-    
+
 # commit the changes to the database
 mydb.commit()
 

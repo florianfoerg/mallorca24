@@ -41,6 +41,7 @@ public enum Airport {
     PAD,
     PRG,
     RLG,
+    RTM,
     SCN,
     SXB,
     STR,

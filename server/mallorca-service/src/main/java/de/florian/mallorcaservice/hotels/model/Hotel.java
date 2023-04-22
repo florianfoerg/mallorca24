@@ -29,7 +29,7 @@ public class Hotel {
     private String description;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(5)
     private Integer hotelStars;
 

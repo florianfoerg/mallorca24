@@ -117,6 +117,7 @@ export const SearchResultsPlaceholder = () => {
 
 // maps search results to cards
 const SearchResults = ({ results, queryParams, scrollPosition }) => {
+
     return (
         <div>
             {results.map((r, i) => {

@@ -1,10 +1,10 @@
-import mysql.connector
+import psycopg2
 
 
 # connect to the MySQL database
-mydb = mysql.connector.connect(
+mydb = psycopg2.connect(
     host="localhost",
-    user="root",
+    user="postgres",
     password="password",
     database="mallorca-db"
 )
@@ -16,7 +16,7 @@ mycursor.execute('''CREATE TABLE IF NOT EXISTS hotel_recommendations
                                         (id INTEGER PRIMARY KEY,
                                         hotel_id BIGINT references hotels)''')
 
-mycursor.execute('SELECT hotel_id FROM hotels ORDER BY RAND() LIMIT 15')
+mycursor.execute('SELECT hotel_id FROM hotels ORDER BY RANDOM() LIMIT 15')
 hotel_ids = mycursor.fetchall()
 
 mycursor.execute('DELETE FROM hotel_recommendations')
