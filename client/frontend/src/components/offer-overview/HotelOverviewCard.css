@@ -1,8 +1,0 @@
-.hotel-overview-card {
-    margin-left: auto;
-    margin-right:auto;
-    width: max(320px, 70vw);
-    max-width: 1100px;
-    margin-top: 15px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-}
