@@ -1,27 +1,27 @@
+# Use an official Python runtime as a parent image
 FROM python:3.9-slim-buster
 
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy requirements file to container
-COPY requirements.txt .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Install dependencies
+# Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install cron package
-RUN apt-get update && apt-get -y install cron
-
-# Copy cron file to container
-COPY recommendations_cron /etc/cron.d/recommendations_cron
+# Add crontab file in the cron directory
+ADD crontab /etc/cron.d/myscript-cron
 
 # Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/recommendations_cron
+RUN chmod 0644 /etc/cron.d/myscript-cron
 
 # Apply cron job
-RUN crontab /etc/cron.d/recommendations_cron
+RUN crontab /etc/cron.d/myscript-cron
 
-# Copy the rest of the application code to the container
-COPY . .
+# Set the timezone
+ENV TZ=Europe/Madrid
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Start cron service in the foreground
+# Run the command on container startup
 CMD ["cron", "-f"]

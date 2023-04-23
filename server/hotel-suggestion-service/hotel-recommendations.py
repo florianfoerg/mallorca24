@@ -5,8 +5,8 @@ import psycopg2
 mydb = psycopg2.connect(
     host="localhost",
     user="postgres",
-    password="postgres",
-    database="mallorcadb"
+    password="password",
+    database="mallorca-db"
 )
 
 # create a cursor object to execute SQL queries
