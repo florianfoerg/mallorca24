@@ -65,8 +65,9 @@ images = [
 mydb = psycopg2.connect(
     host="localhost",
     user="postgres",
-    password="password",
-    database="mallorca-db"
+    password="postgres",
+    database="mallorcadb",
+    client_encoding='UTF8'
 )
 
 # create a cursor object to execute SQL queries
@@ -76,6 +77,8 @@ reader = csv.reader(content, delimiter=';')
 
 #skip first row
 next(reader)
+
+mycursor.execute("SET NAMES 'UTF8'")
 
 # iterate over each row in the CSV file
 for row in reader:
