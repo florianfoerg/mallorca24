@@ -1,0 +1,4 @@
+rootProject.name = 'mallorca24'
+include 'server'
+include 'client'
+
