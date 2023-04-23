@@ -18,8 +18,8 @@ content = open('offers.csv')
 mydb = psycopg2.connect(
     host="localhost",
     user="postgres",
-    password="password",
-    database="mallorca-db"
+    password="postgres",
+    database="mallorcadb"
 )
 
 # create a cursor object to execute SQL queries
@@ -33,7 +33,7 @@ start = 0
 for i in range(start):
     next(reader)
 
-offer_id = 7_900_001
+offer_id = 0
 
 room = {
     "DOUBLE": 0,
