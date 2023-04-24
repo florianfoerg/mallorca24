@@ -33,6 +33,10 @@ dependencies {
     implementation 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:4.0.1'
 }
 
+bootJar {
+    duplicatesStrategy = "exclude"
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
