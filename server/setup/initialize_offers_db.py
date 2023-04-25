@@ -116,7 +116,8 @@ meal = {
     "HALFBOARDPLUS": 5,
     "FULLBOARD": 6,
     "FULLBOARDPLUS": 7,
-    "ACCORDINGDESCRIPTION": 8
+    "ACCORDINGDESCRIPTION": 8,
+    "PROGRAM": 9
 }
 
 ocean = {

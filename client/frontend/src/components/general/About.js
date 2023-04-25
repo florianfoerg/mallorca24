@@ -36,7 +36,7 @@ const About = () => {
                         <li>Java</li>
                         <li>Python</li>
                         <li>Spring Framework</li>
-                        <li>MySQL</li>
+                        <li>PostgeSQL</li>
                         <br />
                     </div>
 
