@@ -7,8 +7,8 @@ const Imprint = () => {
         <h1>Imprint</h1>
         <p style={{ marginTop: "25%" }}>
           Florian Förg<br />
-          <a href="http://florianfoerg.com">florianfoerg.com</a> <br />
-          E-Mail: florian-foerg@web.de
+          <a href="https://florianfoerg.com">florianfoerg.com</a> <br />
+          E-Mail: contact@florianfoerg.com
         </p>
         <Button
           variant="outline-light"
