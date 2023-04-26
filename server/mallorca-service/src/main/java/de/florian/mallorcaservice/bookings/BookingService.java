@@ -25,6 +25,8 @@ public class BookingService {
 
     @AllArgsConstructor
     private static class ConfirmationSender extends Thread {
+        
+        final static private String URL_MAIL_SERVER = "http://localhost:5000";
 
         final static private RestTemplate restTemplate = new RestTemplate();
         final static private HttpHeaders headers = new HttpHeaders();
@@ -47,7 +49,7 @@ public class BookingService {
 
             final HttpEntity<Map<String, Object>> requestBody = new HttpEntity<>(mapValues, headers);
 
-            restTemplate.postForEntity("http://localhost:5000/emails/success-customer", requestBody, String.class);
+            restTemplate.postForEntity(URL_MAIL_SERVER + "/emails/success-customer", requestBody, String.class);
         }
 
         private static void sendMailHotelSuccess(final Booking booking) {
@@ -69,7 +71,7 @@ public class BookingService {
 
             final HttpEntity<Map<String, Object>> requestBody = new HttpEntity<>(mapValues, headers);
 
-            restTemplate.postForEntity("http://localhost:5000/emails/success-hotel", requestBody, String.class);
+            restTemplate.postForEntity(URL_MAIL_SERVER + "/emails/success-hotel", requestBody, String.class);
         }
 
         @Override
