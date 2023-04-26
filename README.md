@@ -1,5 +1,7 @@
 # Mallorca24
 
+LIVE VERSION: [mallorca24.florianfoerg.com](http://mallorca24.florianfoerg.com)
+
 Mallorca24 is a web application that was created as part of CHECK24's holiday coding challenge.
 The goal of the challenge was to create an online platform that connects customers with hotels in Mallorca, allowing them to search and book offers that meet their specific requirements.
 The full description can be found here: https://github.com/check24-scholarships/holiday-challenge.
