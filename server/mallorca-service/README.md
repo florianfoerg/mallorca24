@@ -23,4 +23,5 @@ You can use the following default values if you want to use the default database
    server.ssl.key-store-type=PKCS12
 ```
 Note: you have to set `server.ssl.key-store` and `server.ssl.key-store-password` individually.
+
 3) `./run.sh`: Creates default database and runs Spring application in Docker container. Note: Opens port 8443.

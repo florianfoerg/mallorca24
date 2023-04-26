@@ -27,3 +27,6 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 # Run a test container
 sudo docker run hello-world
+
+# Success message
+echo "DOCKER SETUP COMPLETED!"

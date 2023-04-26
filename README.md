@@ -48,7 +48,7 @@ If you only want to run the frontend and use the default backend, you can set it
 
 Follow the following steps in order to set up backend services:
 
-1) [Main Backup Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service/README.md)
+1) [Main Backend Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service/README.md)
 2) [Mail Service Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/mail-service/README.md)
 3) [Recommendation Service Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/hotel-recommendation-service/README.md)
 4) [Database Initialization](https://github.com/florianfoerg/mallorca24/tree/master/server/setup/README.md)
