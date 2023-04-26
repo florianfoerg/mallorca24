@@ -199,7 +199,7 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Duration in days</Form.Label>
-                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} disabled={endDate === undefined} max={1 + (Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)))}/>
+                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} disabled={endDate === undefined} max={endDate === undefined ? 1 : 1 + (Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)))}/>
                                 </Form.Group>
                             </div>
                         </Form.Group>

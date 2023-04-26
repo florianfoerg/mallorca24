@@ -8,7 +8,7 @@ const BookingSuccessPage = () => {
   const { booking_id } = useParams();
 
   useEffect(() => {
-    fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/bookings/validate/${booking_id}`)
+    fetch(window.backendPath + `/bookings/validate/${booking_id}`)
       .then(response => {
         if (response.status !== 200) {
           setValidRequest(false);
@@ -30,7 +30,7 @@ const BookingSuccessPage = () => {
               In case of questions refer to the booking id: {booking_id} <br />
               <a href="/about">More information</a>
             </div>
-            <img src="https://www.creativefabrica.com/wp-content/uploads/2023/03/06/Mallorca-Tropical-Splash-Watercolor-Graphics-63443526-1-1-580x387.jpg" style={{ height: "20vh", marginTop: "20px" }} alt={'image penguin'} />
+            <img src="https://www.creativefabrica.com/wp-content/uploads/2023/03/06/Mallorca-Tropical-Splash-Watercolor-Graphics-63443526-1-1-580x387.jpg" style={{ height: "20vh", marginTop: "20px" }} alt={'penguin'} />
             <Button variant="outline-light" title='Go back' style={{ maxWidth: "200px", marginTop: "3%", borderRadius: "0", color: "#063773", borderColor: "#063773" }} href='/'>
               Back to main page
             </Button>

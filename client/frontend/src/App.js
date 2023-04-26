@@ -6,9 +6,11 @@ import LandingPage from "./pages/landing-page/LandingPage";
 import OfferOverviewPage from "./pages/offer-overview-page/OfferOverviewPage";
 import ConfirmBookingPage from "./pages/confirm-booking-page/ConfirmBookingPage";
 import BookingSuccessPage from "./pages/booking-success-page/BookingSuccessPage";
-import SearchResultPage from "./pages/SearchResultPage/SearchResultPage";
+import SearchResultPage from "./pages/search-result-page/SearchResultPage";
 import Imprint from "./components/general/Imprint";
 import About from "./components/general/About";
+
+window.backendPath = "https://jvxmbw4l428q734z.myfritz.net:8443"
 
 function App() {
   return (

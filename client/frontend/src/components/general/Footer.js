@@ -8,11 +8,19 @@ import { useMediaQuery } from 'react-responsive';
 const Footer = () => {
   const isWidthScreen = useMediaQuery({ minWidth: 1000 });
 
+
+    const handleScrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    };
+
   return (
     <div>
-      <a className='to-top' href="#">
+      <div className='to-top' onClick={handleScrollToTop}>
         Jump to the top
-      </a>
+      </div>
 
       <div style={{
         paddingBottom: "46px",

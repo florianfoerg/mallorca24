@@ -53,7 +53,7 @@ function HotelResultPage() {
     useEffect(() => {
 
         // API request to get all information from the server
-        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/hotel/${hotel_id}`)
+        fetch(window.backendPath + `/hotels/hotel/${hotel_id}`)
             .then(response => response.json())
             .then(data => {
                 setHotel(data)
@@ -62,7 +62,7 @@ function HotelResultPage() {
                 setValidRequest(false)
             });
 
-        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/bookings/hotelBookings/${hotel_id}`)
+        fetch(window.backendPath + `/bookings/hotelBookings/${hotel_id}`)
             .then(response => response.json())
             .then(data => {
                 setAmountBookings(data);
@@ -75,7 +75,7 @@ function HotelResultPage() {
         if (allResults) {
 
             // API request to get all information from the server
-            fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/offersOfHotel/${hotel_id}`)
+            fetch(window.backendPath + `/hotels/offersOfHotel/${hotel_id}`)
                 .then(response => response.json())
                 .then(data => {
                     setOffers(data);
@@ -108,7 +108,7 @@ function HotelResultPage() {
             };
 
             // API request to get all information from the server
-            fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/hotels/offersOfHotelFiltered/${hotel_id}`, {
+            fetch(window.backendPath + `/hotels/offersOfHotelFiltered/${hotel_id}`, {
                 method: "POST",
                 body: JSON.stringify(filteredRequest),
                 headers: {
@@ -124,7 +124,8 @@ function HotelResultPage() {
                     setValidRequest(false);
                     });
         }
-    }, [count_adults, count_children, duration, latest_possible, earliest_possible, hotel_id, allResults]);
+        // eslint-disable-next-line 
+    }, [count_adults, count_children, duration, latest_possible, earliest_possible, hotel_id, allResults, max_price, oceanview, has_pool, min_stars]);
 
     document.title = (validRequest ? hotel.hotelName : "Invalid Request") + " | Mallorca24";
 

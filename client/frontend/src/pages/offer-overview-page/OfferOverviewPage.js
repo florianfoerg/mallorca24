@@ -29,7 +29,7 @@ const OfferOverviewPage = () => {
 
     // Fetch the offer data on component mount
     useEffect(() => {
-        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/offers/offer/${offer_id}`)
+        fetch(window.backendPath + `/offers/offer/${offer_id}`)
             .then(response => response.json())
             .then(data => {
                 setOffer(data)

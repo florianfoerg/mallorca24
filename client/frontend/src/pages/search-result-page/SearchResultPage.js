@@ -112,7 +112,7 @@ const SearchResultPage = () => {
             };
 
             // API request to get all information from the server
-            fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/offers/offersFiltered`, {
+            fetch(window.backendPath + `/offers/offersFiltered`, {
                 method: "POST",
                 body: JSON.stringify(filteredRequest),
                 headers: {

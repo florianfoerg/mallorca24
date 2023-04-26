@@ -17,7 +17,7 @@ RUN gradle clean build
 RUN test -f "build/libs/mallorca-service-0.0.1-SNAPSHOT.jar"
 
 # Expose the default port used by the Spring application
-EXPOSE 8080
+EXPOSE 8433
 
 # Start the Spring application
 CMD ["java", "-jar", "build/libs/mallorca-service-0.0.1-SNAPSHOT.jar"]

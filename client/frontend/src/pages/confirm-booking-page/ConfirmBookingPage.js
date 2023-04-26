@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 // function to book an offer
 async function bookOffer(email, offer_id, navigate, setValidRequest) {
     try {
-        const response = await fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/bookings/booking/${offer_id}?email=${email}`, {
+        const response = await fetch(window.backendPath + `/bookings/booking/${offer_id}?email=${email}`, {
             method: 'POST'
         });
         const data = await response.json();
@@ -34,7 +34,7 @@ const ConfirmBookingPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://jvxmbw4l428q734z.myfritz.net:8080/offers/validate/${offer_id}`)
+        fetch(window.backendPath + `/offers/validate/${offer_id}`)
             .then(response => {
                 if (response.status !== 200) {
                     setValidRequest(false);

@@ -72,7 +72,7 @@ export const OfferCard = ({ offer, overview, duration }) => {
 
                     <div className="offer-card-sec">
                         <Card.Title>Your room:</Card.Title>
-                        <img src={roomtypeImages[offer.roomtype]} width={200} height={120} alt="image room"></img>
+                        <img src={roomtypeImages[offer.roomtype]} width={200} height={120} alt="room"></img>
                         <div style={{marginTop: "15px"}}><FontAwesomeIcon icon={faDoorClosed} /> {offer.roomtype.toLowerCase()}</div>
                         <div><FontAwesomeIcon icon={faWater}  /> {mapOceanview(offer.oceanview)}</div>
                     </div>
