@@ -69,7 +69,7 @@ const mealTypes = [
     { code: 'HALFBOARD', name: 'Half Board' },
     { code: 'HALFBOARDPLUS', name: 'Half Board Plus' },
     { code: 'NONE', name: 'None' },
-    {code: 'PROGRAM', name: 'Program'}
+    { code: 'PROGRAM', name: 'Program' }
 ];
 
 const roomTypes = [
@@ -117,7 +117,7 @@ function ContextAwareToggle({ eventKey, callback }) {
 
 
 // component to display the search form
-const SearchForm = ({ adults, children, label, duration, earliest_possible, latest_possible, has_pool, oceanview, max_price, min_stars, roomtypes, mealtypes, departure_airports, setResultsLoaded }) => {
+const SearchForm = ({ adults, children, label, duration, earliest_possible, latest_possible, has_pool, oceanview, max_price, min_stars, roomtypes, mealtypes, departure_airports, setResultsLoaded, reload }) => {
     const navigate = useNavigate()
     const [startDate, setStartDate] = useState(earliest_possible);
     const [endDate, setEndDate] = useState(latest_possible);
@@ -148,7 +148,9 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
         }
 
         navigate(`/search?${params.toString()}`);
-        window.location.reload();
+
+        if (reload)
+            window.location.reload();
 
     };
 
@@ -189,7 +191,7 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
                             <div style={{ display: "flex", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Earliest start date</Form.Label>
-                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"Enter a date"} name='earliest_possible' defaultValue={earliest_possible} min={new Date().toISOString().split('T')[0]} onChange={e => setStartDate(e.target.value)}/>
+                                    <Form.Control type="date" style={{ borderRadius: "0", minWidth: "250px" }} required={true} placeholder={"Enter a date"} name='earliest_possible' defaultValue={earliest_possible} min={new Date().toISOString().split('T')[0]} onChange={e => setStartDate(e.target.value)} />
                                 </Form.Group>
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
@@ -199,7 +201,7 @@ const SearchForm = ({ adults, children, label, duration, earliest_possible, late
 
                                 <Form.Group style={{ marginLeft: "15px", marginRight: "15px" }}>
                                     <Form.Label>Duration in days</Form.Label>
-                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} disabled={endDate === undefined} max={endDate === undefined ? 1 : 1 + (Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)))}/>
+                                    <Form.Control type="number" style={{ borderRadius: "0", minWidth: "250px" }} placeholder='Enter a duration' min={1} required={true} name='duration' defaultValue={duration} disabled={endDate === undefined} max={endDate === undefined ? 1 : 1 + (Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)))} />
                                 </Form.Group>
                             </div>
                         </Form.Group>

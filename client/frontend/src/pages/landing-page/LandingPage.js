@@ -26,7 +26,7 @@ const LandingPage = () => {
             </div>
 
             {/* section for search form */}
-            <SearchForm adults={1} children={0} label={"Find your trip"}/>
+            <SearchForm adults={1} children={0} label={"Find your trip"} reload={false}/>
 
             <MallorcaInfoBox />
 
