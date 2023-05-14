@@ -8,7 +8,7 @@ The full description can be found here: https://github.com/check24-scholarships/
 
 ## System Structure
 
-The application is composed of several subsystems, each responsible for managing a different aspect of the platform. Client-Server pattern is being used for the application. The overall structure of the system is illustrated in the following component diagram:
+The application is composed of several subsystems, each responsible for managing a different aspect of the platform. Client-Server pattern is being used for structuring. The overall structure of the system is illustrated in the following component diagram:
 
 ![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/master/rsc/structure%20holiday%20challenge.svg)
 
@@ -34,12 +34,12 @@ Provides a responsive user interface. Utilizes data from the `Mallorca-Service`.
 
 ### Feature List
 
-#### Required Features
+#### Implemented Required Features
 - <span style="color: green; font-weight: bold;">✓</span> Efficiently search through all data using various filtering options.
 - <span style="color: green; font-weight: bold;">✓</span> Present two result pages: one displaying the minimum prices for each hotel and another showing all suitable offers.
-- <span style="color: green; font-weight: bold;">✓</span> Ensure fast loading times.
+- <span style="color: green; font-weight: bold;">✓</span> Ensure fast loading times: <1s (95%).
 
-#### Additional Features
+#### Implemented Additional Features
 - <span style="color: green; font-weight: bold;">✓</span> Enable sorting of offer results by relevance, minimum price, and maximum price.
 - <span style="color: green; font-weight: bold;">✓</span> Allow booking of offers, which makes them unavailable for further searching.
 - <span style="color: green; font-weight: bold;">✓</span> Automatically send a confirmation email with an attached PDF upon booking an offer.
@@ -50,7 +50,7 @@ Provides a responsive user interface. Utilizes data from the `Mallorca-Service`.
 - <span style="color: green; font-weight: bold;">✓</span> Ensure a responsive design that optimizes the website for different screen sizes.
 - <span style="color: green; font-weight: bold;">✓</span> Implement safeguards to process only valid search and booking requests.
 - <span style="color: green; font-weight: bold;">✓</span> Facilitate easy setup with Docker support and setup scripts.
-- <span style="color: green; font-weight: bold;">✓</span> Added HTTPS support.
+- <span style="color: green; font-weight: bold;">✓</span> Add HTTPS support.
 
 ### Performance optimization
 To optimize loading times, the system incorporates the following strategies:
