@@ -36,7 +36,6 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getOffersOfHotelFiltered(filters, hotelId));
     }
 
-    @CrossOrigin
     @GetMapping(value = "/offersOfHotel/{id}")
     public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable("id") Long hotelId) {
         return ResponseEntity.ok(hotelService.getOffersOfHotel(hotelId));
@@ -47,7 +46,6 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getCurrentRecommendations());
     }
 
-    @CrossOrigin
     @GetMapping(value = "/hotel/{id}")
     public ResponseEntity<Hotel> getHotel(@PathVariable("id") Long hotelId) {
         return ResponseEntity.ok(hotelService.requestHotelData(hotelId));

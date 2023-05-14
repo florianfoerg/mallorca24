@@ -18,18 +18,6 @@ public class BookingController {
     private BookingService bookingService;
     private BookingRepository bookingRepository;
 
-    @Deprecated
-    @PostMapping(value = "/confirmation/{booking_id}")
-    public ResponseEntity<Void> confirmBooking(@PathVariable("booking_id") UUID bookingId) {
-        return ResponseEntity.ok().build();
-    }
-
-    @Deprecated
-    @PostMapping(value = "/decline/{booking_id}")
-    public ResponseEntity<Void> declineBooking(@PathVariable("booking_id") UUID bookingId) {
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping(value = "/booking/{offer_id}")
     public ResponseEntity<UUID> placeBooking(@PathParam("email") String email, @PathVariable("offer_id") Long offerId) {
         return ResponseEntity.ok(bookingService.placeBooking(email, offerId));

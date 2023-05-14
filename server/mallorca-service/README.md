@@ -1,5 +1,95 @@
 # Mallorca24-Main-Backend-Service
 
+Responsible to provide offers, store bookings and customers, manage hotels. 
+
+## Endpoints
+
+Bookings:
+- **POST** `/booking/{offer_id}`:  
+  Endpoint for placing a booking.  
+  Parameters: `email` (String), `offer_id` (Long)  
+  Returns: `ResponseEntity<UUID>`
+
+- **GET** `/hotelBookings/{hotel_id}`:  
+  Endpoint for retrieving the number of bookings for a hotel.  
+  Parameters: `hotel_id` (Long)  
+  Returns: `ResponseEntity<Integer>`
+
+- **GET** `/validate/{booking_id}`:  
+  Endpoint for validating an offer.  
+  Parameters: `booking_id` (UUID)  
+  Returns: `ResponseEntity<Void>`
+
+Customers:
+- **GET** `/all`:  
+  Endpoint for retrieving all customers.  
+  Returns: `ResponseEntity<List<Customer>>`
+
+- **POST** `/new`:  
+  Endpoint for adding a new customer.  
+  Parameters: `email` (String)  
+  Returns: `ResponseEntity<Void>`
+
+Hotels:
+- **GET** `/all`:  
+  Endpoint for retrieving all hotels.  
+  Returns: `ResponseEntity<List<Hotel>>`
+
+- **POST** `/new`:  
+  Endpoint for adding a new hotel.  
+  Parameters: `hotel` (Hotel object)  
+  Returns: `ResponseEntity<Void>`
+
+- **POST** `/offersOfHotelFiltered/{id}`:  
+  Endpoint for retrieving filtered offers of a specific hotel.  
+  Parameters: `filters` (FilteredRequest object), `id` (Long)  
+  Returns: `ResponseEntity<List<OfferDTO>>`
+
+- **GET** `/offersOfHotel/{id}`:  
+  Endpoint for retrieving offers of a specific hotel.  
+  Parameters: `id` (Long)  
+  Returns: `ResponseEntity<List<OfferDTO>>`
+
+- **GET** `/recommendations`:  
+  Endpoint for retrieving current hotel recommendations.  
+  Returns: `ResponseEntity<List<HotelOverviewDTO>>`
+
+- **GET** `/hotel/{id}`:  
+  Endpoint for retrieving data of a specific hotel.  
+  Parameters: `id` (Long)  
+  Returns: `ResponseEntity<Hotel>`
+
+Offers:
+- **Deprecated**  
+  **GET** `/all`:  
+  Endpoint for retrieving all offers.  
+  Returns: `ResponseEntity<List<Offer>>`
+
+- **POST** `/new`:  
+  Endpoint for creating a new offer.  
+  Parameters: `offer` (Offer object), `hotelId` (Long)  
+  Returns: `ResponseEntity<Void>`
+
+- **DELETE** `/offer/{id}`:  
+  Endpoint for removing an offer.  
+  Parameters: `id` (Long)  
+  Returns: `ResponseEntity<Void>`
+
+- **GET** `/offer/{id}`:  
+  Endpoint for retrieving a specific offer.  
+  Parameters: `id` (Long)  
+  Returns: `ResponseEntity<Offer>`
+
+- **POST** `/offersFiltered`:  
+  Endpoint for retrieving filtered offers.  
+  Parameters: `filters` (FilteredRequest object)  
+  Returns: `ResponseEntity<List<HotelOverviewDTO>>`
+
+- **GET** `/validate/{offer_id}`:  
+  Endpoint for validating an offer.  
+  Parameters: `offer_id` (Long)  
+  Returns: `ResponseEntity<Void>`
+
 
 ## Run
 
@@ -15,7 +105,7 @@
 2) Adjust [application.properties](https://github.com/florianfoerg/mallorca24/blob/master/server/mallorca-service/src/main/resources/application.properties): Make sure to set database and TSL properties. 
 You can use the following default values if you want to use the default database: 
 ```
-   spring.datasource.url=jdbc:postgresql://localhost:5432/mallorca-db
+   spring.datasource.url=jdbc:postgresql://localhost:5432/mallorcadb
    spring.datasource.username=postgres
    spring.datasource.password=postgres
    server.port=8443

@@ -16,6 +16,7 @@ import org.eclipse.persistence.annotations.RangePartitioning;
 import java.time.LocalDateTime;
 
 
+
 /*
 
 -- Table: public.offers
@@ -121,52 +122,6 @@ CREATE INDEX IF NOT EXISTS offer_index
 
 /*
 
-CREATE TABLE past PARTITION OF offers FOR VALUES FROM (MINVALUE) TO ('2023-01-01 00:00:00');
-CREATE TABLE p2301 PARTITION OF offers FOR VALUES FROM ('2023-01-01 00:00:00') TO ('2023-02-01 00:00:00');
-CREATE TABLE p2302_1 PARTITION OF offers FOR VALUES FROM ('2023-02-01 00:00:00') TO ('2023-02-15 00:00:00');
-CREATE TABLE p2302_2 PARTITION OF offers FOR VALUES FROM ('2023-02-15 00:00:00') TO ('2023-03-01 00:00:00');
-CREATE TABLE p2303_1 PARTITION OF offers FOR VALUES FROM ('2023-03-01 00:00:00') TO ('2023-03-15 00:00:00');
-CREATE TABLE p2303_2 PARTITION OF offers FOR VALUES FROM ('2023-03-15 00:00:00') TO ('2023-04-01 00:00:00');
-
-CREATE TABLE p2304_1 PARTITION OF offers FOR VALUES FROM ('2023-04-01 00:00:00') TO ('2023-04-10 00:00:00');
-CREATE TABLE p2304_2 PARTITION OF offers FOR VALUES FROM ('2023-04-10 00:00:00') TO ('2023-04-20 00:00:00');
-CREATE TABLE p2304_3 PARTITION OF offers FOR VALUES FROM ('2023-04-20 00:00:00') TO ('2023-05-01 00:00:00');
-
-CREATE TABLE p2305_1 PARTITION OF offers FOR VALUES FROM ('2023-05-01 00:00:00') TO ('2023-05-10 00:00:00');
-CREATE TABLE p2305_2 PARTITION OF offers FOR VALUES FROM ('2023-05-10 00:00:00') TO ('2023-05-20 00:00:00');
-CREATE TABLE p2305_3 PARTITION OF offers FOR VALUES FROM ('2023-05-20 00:00:00') TO ('2023-06-01 00:00:00');
-
-CREATE TABLE p2306_1 PARTITION OF offers FOR VALUES FROM ('2023-06-01 00:00:00') TO ('2023-06-10 00:00:00');
-CREATE TABLE p2306_2 PARTITION OF offers FOR VALUES FROM ('2023-06-10 00:00:00') TO ('2023-06-20 00:00:00');
-CREATE TABLE p2306_3 PARTITION OF offers FOR VALUES FROM ('2023-06-20 00:00:00') TO ('2023-07-01 00:00:00');
-
-CREATE TABLE p2307_1 PARTITION OF offers FOR VALUES FROM ('2023-07-01 00:00:00') TO ('2023-07-10 00:00:00');
-CREATE TABLE p2307_2 PARTITION OF offers FOR VALUES FROM ('2023-07-10 00:00:00') TO ('2023-07-20 00:00:00');
-CREATE TABLE p2307_3 PARTITION OF offers FOR VALUES FROM ('2023-07-20 00:00:00') TO ('2023-08-01 00:00:00');
-
-CREATE TABLE p2308_1 PARTITION OF offers FOR VALUES FROM ('2023-08-01 00:00:00') TO ('2023-08-10 00:00:00');
-CREATE TABLE p2308_2 PARTITION OF offers FOR VALUES FROM ('2023-08-10 00:00:00') TO ('2023-08-20 00:00:00');
-CREATE TABLE p2308_3 PARTITION OF offers FOR VALUES FROM ('2023-08-20 00:00:00') TO ('2023-09-01 00:00:00');
-
-CREATE TABLE p2309_1 PARTITION OF offers FOR VALUES FROM ('2023-09-01 00:00:00') TO ('2023-09-10 00:00:00');
-CREATE TABLE p2309_2 PARTITION OF offers FOR VALUES FROM ('2023-09-10 00:00:00') TO ('2023-09-20 00:00:00');
-CREATE TABLE p2309_3 PARTITION OF offers FOR VALUES FROM ('2023-09-20 00:00:00') TO ('2023-10-01 00:00:00');
-
-CREATE TABLE p2310_1 PARTITION OF offers FOR VALUES FROM ('2023-10-01 00:00:00') TO ('2023-10-10 00:00:00');
-CREATE TABLE p2310_2 PARTITION OF offers FOR VALUES FROM ('2023-10-10 00:00:00') TO ('2023-10-20 00:00:00');
-CREATE TABLE p2310_3 PARTITION OF offers FOR VALUES FROM ('2023-10-20 00:00:00') TO ('2023-11-01 00:00:00');
-
-CREATE TABLE p2311 PARTITION OF offers FOR VALUES FROM ('2023-11-01 00:00:00') TO ('2023-12-01 00:00:00');
-CREATE TABLE p2312 PARTITION OF offers FOR VALUES FROM ('2023-12-01 00:00:00') TO ('2024-01-01 00:00:00');
-CREATE TABLE p2401 PARTITION OF offers FOR VALUES FROM ('2024-01-01 00:00:00') TO ('2024-02-01 00:00:00');
-CREATE TABLE future PARTITION OF offers FOR VALUES FROM ('2024-02-01 00:00:00') TO (MAXVALUE);
-
-CREATE INDEX all_index ON Offers (hotel_id, offer_id, count_children, inbound_departure_date_time, count_adults, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time);
-CREATE INDEX outbound_departure_date_time_index ON Offers (outbound_departure_date_time);
-CREATE INDEX inbound_departure_date_time_index ON Offers (inbound_departure_date_time);
-CREATE INDEX count_children_idx ON Offers (count_children);
-CREATE INDEX count_adults_idx ON Offers (count_adults);
-
 DO $$ DECLARE
     hotel_id INTEGER;
 BEGIN
@@ -263,9 +218,13 @@ CREATE TABLE IF NOT EXISTS public.search_' || i ||'
     roomtype smallint,
     hotel_id bigint NOT NULL,
 	duration bigint,
-    CONSTRAINT fk9aljdqoi39d35fattfdgp95ac FOREIGN KEY (hotel_id, offer_id)
-        REFERENCES public.hotels (hotel_id, offer_id) MATCH SIMPLE
-        ON UPDATE CASCADE
+    CONSTRAINT fk9aljdqoi39d35fattfdgp95ac FOREIGN KEY (hotel_id)
+        REFERENCES public.hotels (hotel_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+	CONSTRAINT f838248f213ddd4384832fe79fe FOREIGN KEY (offer_id, hotel_id)
+	    REFERENCES public.offers (offer_id, hotel_id) MATCH SIMPLE
+	    ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT offers_count_adults_check CHECK (count_adults >= 1)
 );
@@ -343,57 +302,12 @@ CREATE INDEX IF NOT EXISTS offer_index_' || i ||'
 ;';
     END LOOP;
 END $$;
-
 */
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "offers", indexes = {
-        @Index(name = "price_index", columnList = "price"),
-        @Index(name = "hotel_index", columnList = "hotel_id"),
-        @Index(name = "airport_index", columnList = "outboundDepartureAirport"),
-        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime"),
-        @Index(name = "search_index_airport", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,outboundDepartureAirport"),
-        @Index(name = "search_index_hotel", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,hotel_id"),
-        @Index(name = "search_index_roomtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,roomtype"),
-        @Index(name = "search_index_mealtype", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,mealtype"),
-        @Index(name = "search_index_price", columnList = "countAdults,countChildren,outboundDepartureDateTime,inboundDepartureDateTime,price"),
-})
-@RangePartitioning(
-        name = "RangePartitioningByOutboundDepartureDateTimeMonth",
-        partitionColumn = @Column(name = "outbound_departure_date_time"),
-        partitionValueType = LocalDateTime.class,
-        unionUnpartitionableQueries = true,
-        partitions = {
-                @RangePartition(connectionPool = "p01", endValue = "2022-01-01 00:00:00"),
-                @RangePartition(connectionPool = "p02", endValue = "2022-02-01 00:00:00"),
-                @RangePartition(connectionPool = "p03", endValue = "2022-03-01 00:00:00"),
-                @RangePartition(connectionPool = "p04", endValue = "2022-04-01 00:00:00"),
-                @RangePartition(connectionPool = "p05", endValue = "2022-05-01 00:00:00"),
-                @RangePartition(connectionPool = "p06", endValue = "2022-06-01 00:00:00"),
-                @RangePartition(connectionPool = "p07", endValue = "2022-07-01 00:00:00"),
-                @RangePartition(connectionPool = "p08", endValue = "2022-08-01 00:00:00"),
-                @RangePartition(connectionPool = "p09", endValue = "2022-09-01 00:00:00"),
-                @RangePartition(connectionPool = "p10", endValue = "2022-10-01 00:00:00"),
-                @RangePartition(connectionPool = "p11", endValue = "2022-11-01 00:00:00"),
-                @RangePartition(connectionPool = "p12", endValue = "2022-12-01 00:00:00"),
-                @RangePartition(connectionPool = "p13", endValue = "2023-01-01 00:00:00"),
-                @RangePartition(connectionPool = "p14", endValue = "2023-02-01 00:00:00"),
-                @RangePartition(connectionPool = "p15", endValue = "2023-03-01 00:00:00"),
-                @RangePartition(connectionPool = "p16", endValue = "2023-04-01 00:00:00"),
-                @RangePartition(connectionPool = "p17", endValue = "2023-05-01 00:00:00"),
-                @RangePartition(connectionPool = "p18", endValue = "2023-06-01 00:00:00"),
-                @RangePartition(connectionPool = "p19", endValue = "2023-07-01 00:00:00"),
-                @RangePartition(connectionPool = "p20", endValue = "2023-08-01 00:00:00"),
-                @RangePartition(connectionPool = "p21", endValue = "2023-09-01 00:00:00"),
-                @RangePartition(connectionPool = "p22", endValue = "2023-10-01 00:00:00"),
-                @RangePartition(connectionPool = "p23", endValue = "2023-11-01 00:00:00"),
-                @RangePartition(connectionPool = "p24", endValue = "2023-12-01 00:00:00"),
-                @RangePartition(connectionPool = "p25", endValue = "MAXVALUE")
-        }
-)
-@Partitioned("RangePartitioningByOutboundDepartureDateTimeMonth")
+@Table(name = "offers")
 public class Offer {
 
     @Id

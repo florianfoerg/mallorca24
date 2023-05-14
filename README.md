@@ -10,34 +10,57 @@ The full description can be found here: https://github.com/check24-scholarships/
 
 The application is composed of several subsystems, each responsible for managing a different aspect of the platform. The overall structure of the system is illustrated in the following component diagram:
 
-![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/master/rsc/structure%20holiday%20challenge.png)
+![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/master/rsc/structure%20holiday%20challenge.svg)
 
 ### Frontend
-The frontend is responsible for providing a graphical user interface that allows users to interact with the platform.
-It is built using React and communicates with the backend through a REST API provided by the holiday-gateway subsystem.
-The frontend is divided into two major parts:
 
-- react-frontend: The frontend of the application is written with React. It is separated into two major parts:
-    1. The customer-UI: This part of the frontend is used by customers to search for and book offers. Customers can enter their search criteria and view the results, which are displayed in a user-friendly way. Once they have found an offer they are interested in, they can proceed to book it.
-       TODO:add pictures!
-    2. hotel-UI: This part of the frontend is used by hotels to manage their offers. Hotels can see when a customer books an offer, delete offers that are no longer available, and add new ones. They can also update their hotel-specific data, such as contact information and amenities.
-       TODO: add pictures/add test information!
+Provides a responsive user interface. Utilizes data from the `Mallorca-Service`. See: [Frontend](https://github.com/florianfoerg/mallorca24/blob/master/client/frontend).
 
 ### Backend
-The backend is responsible for managing the data sets that power the platform and providing the services that the frontend uses to communicate with the various subsystems. The Backend-subsystem assumes, that all requests within the system itself are self. Therefore, there are no security checks within the system (NO Zero Trust)
-.
-- holiday-gateway: This subsystem is responsible for handling security checks and distributing requests to the other subsystems. It is built using Java and the Spring framework.
-- holiday-mail: This subsystem is a microservice that is used to send emails to hotels and customers when orders are booked. It is written in Python.
-- holiday-offer-order: This subsystem is responsible for managing and processing all data that can be characterized as offers or orders. Its main purpose is to efficiently process search queries by customers. Also, It is responsible for keeping track of which offers have been booked and by whom. It is built using Java and the Spring framework.
-- databases: TODO ER Modell!
 
-## Requirements and optimisations
+- `Mallorca-Service`: Responsible for providing an API to multiple services. Handles queries and modifications related to offers, hotels, and customers. Calls the `Email-Service` for sending confirmation emails. See [Mallorca-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service).
 
-TODO
+- `Email-Service`: Responsible for generating booking confirmation PDFs and sending emails to customers and hotels. See [Email-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/mail-service).
+
+- `Recommendation-Service`: Responsible for updating the database to modify hotel recommendations every 12-hour interval. See [Recommendation-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/hotel-recommendation-service).
+
+- `Setup`: Can be used to initialize the database and create mock data. See [Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/setup).
+
+
+
+## Features and Optimisations
+
+### Feature List
+
+#### Required Features
+- <span style="color: green; font-weight: bold;">✓</span> Efficiently search through all data using various filtering options.
+- <span style="color: green; font-weight: bold;">✓</span> Present two result pages: one displaying the minimum prices for each hotel and another showing all suitable offers.
+- <span style="color: green; font-weight: bold;">✓</span> Ensure fast loading times.
+
+#### Additional Features
+- <span style="color: green; font-weight: bold;">✓</span> Enable sorting of offer results by relevance, minimum price, and maximum price.
+- <span style="color: green; font-weight: bold;">✓</span> Allow booking of offers, which makes them unavailable for further searching.
+- <span style="color: green; font-weight: bold;">✓</span> Automatically send a confirmation email with an attached PDF upon booking an offer.
+- <span style="color: green; font-weight: bold;">✓</span> Enhance offer and hotel data by adding mock values for images, descriptions, swimming pools, and durations.
+- <span style="color: green; font-weight: bold;">✓</span> Display a map with a marker indicating the hotel's location.
+- <span style="color: green; font-weight: bold;">✓</span> Provide advanced search functionality, including hotel stars, ocean view, meal type, room type, maximum price, and swimming pool.
+- <span style="color: green; font-weight: bold;">✓</span> Update hotel recommendations automatically every 12 hours.
+- <span style="color: green; font-weight: bold;">✓</span> Ensure a responsive design that optimizes the website for different screen sizes.
+- <span style="color: green; font-weight: bold;">✓</span> Implement safeguards to process only valid search and booking requests.
+- <span style="color: green; font-weight: bold;">✓</span> Facilitate easy setup with Docker support and setup scripts.
+- <span style="color: green; font-weight: bold;">✓</span> Added HTTPS support.
+
+### Performance optimization
+To optimize loading times, the system incorporates the following strategies:
+
+1) Leveraging specialized search tables dedicated to storing offers. By employing a hash value computed from count_adults, count_children, and duration, the system intelligently selects the appropriate search table for each query.
+2) Implementing partitioning for the offer table based on hotel_id, ensuring rapid query execution when the hotel is specified. The decision to use PostgreSQL as the DBMS was motivated by its support for partitioning with foreign keys, a feature absent in MySQL.
+3) Employing multiple btrees indexes on the tables to streamline query performance and deliver efficient processing times. These indexes are instrumental in achieving optimal time complexity.
+4) Duration is stored in offer that it only has to be computed once. 
 
 ## How to run
 
-The following guid provides an overview of how to run the application on Ubuntu (servers). all other operating systems work similar. 
+The following guid provides an overview of how to run the application on Ubuntu (servers). All other operating systems work similar. 
 Please make sure your Docker works properly. If you do not have installed it yet use `./install-docker.sh`.
 
 ### Only run frontend

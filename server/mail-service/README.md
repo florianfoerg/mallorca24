@@ -3,8 +3,26 @@
 This Python server can be used to send emails. 
 
 Endpoints:
-- `/emails/success-customer`: Sends a success email to the customer. The body should contain "bookingId", "dateDeparture", "dateArrival", "hotelName", "price", and "to". "to" refers to the customer's email address.
-- `/emails/success-hotel`: By default, this endpoint is turned off. Activate it on line 187. It can be used to send booking information to the hotel's email address. The body should contain "bookingId", "dateDeparture", "dateArrival", "hotelName", "price", "to", and "roomType". "to" refers to the hotel's email address.
+- **POST** `/emails/success-customer`:  
+  Endpoint for sending a success email to the customer.  
+  Request JSON parameters:
+    - `bookingId` (string)
+    - `dateDeparture` (string)
+    - `dateArrival` (string)
+    - `hotelName` (string)
+    - `price` (string)
+    - `to` (string)
+
+- **POST** `/emails/success-hotel`:  
+  Endpoint for sending a success email to the hotel.  
+  Request JSON parameters:
+    - `bookingId` (string)
+    - `dateDeparture` (string)
+    - `dateArrival` (string)
+    - `hotelName` (string)
+    - `price` (string)
+    - `to` (string)
+    - `roomType` (string)
 
 ## Run
 
