@@ -52,7 +52,7 @@ Provides a responsive user interface. Utilizes data from the `Mallorca-Service`.
 - <span style="color: green; font-weight: bold;">✓</span> Facilitate easy setup with Docker support and setup scripts.
 - <span style="color: green; font-weight: bold;">✓</span> Add HTTPS support.
 
-### Performance optimization
+### Performance Optimization
 To optimize loading times, the system incorporates the following strategies:
 
 1) Leveraging specialized search tables dedicated to storing offers. By employing a hash value computed from count_adults, count_children, and duration, the system intelligently selects the appropriate search table for each query.
@@ -60,7 +60,7 @@ To optimize loading times, the system incorporates the following strategies:
 3) Employing multiple btrees indexes on the tables to streamline query performance and deliver efficient processing times. These indexes are instrumental in achieving optimal time complexity.
 4) Duration is stored in offer that it only has to be computed once. 
 
-## How to run
+## How to Run
 
 The following guid provides an overview of how to run the application on Ubuntu (servers). All other operating systems work similar. 
 Please make sure your Docker works properly. If you do not have installed it yet use `./install-docker.sh`.
