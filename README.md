@@ -65,11 +65,11 @@ To optimize loading times, the system incorporates the following strategies:
 The following guid provides an overview of how to run the application on Ubuntu (servers). All other operating systems work similar. 
 Please make sure your Docker works properly. If you do not have installed it yet use `./install-docker.sh`.
 
-### Only run frontend
+### Only Run Frontend
 
 If you only want to run the frontend and use the default backend, you can set it up in one single command. Please have a look at [Frontend Setup](https://github.com/florianfoerg/mallorca24/blob/master/client/frontend/README.md).
 
-### Run frontend and backend
+### Run Frontend and Backend
 
 Follow the following steps in order to set up backend services:
 
