@@ -31,6 +31,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
     implementation 'org.eclipse.persistence:eclipselink:4.0.1'
     implementation 'org.eclipse.persistence:org.eclipse.persistence.jpa.modelgen.processor:4.0.1'
+    implementation("com.google.guava:guava:24.0-jre")
 }
 
 bootJar {

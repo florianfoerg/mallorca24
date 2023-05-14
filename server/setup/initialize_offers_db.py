@@ -1,6 +1,17 @@
 import csv
 import psycopg2
 from datetime import datetime
+import hashlib
+
+def get_hash_offer(count_adults, count_children, duration):
+    # Calculate the hash value using SHA256
+    hash_value = hashlib.sha256(str(count_adults * duration * (count_children + 1)).encode("utf-8")).hexdigest()
+
+    # Convert the first 8 characters of the hash to a 32-bit integer
+    hash_int = int(hash_value[:4], 16)
+
+    # Return the modulus 500 of the hash integer
+    return hash_int % 500
 
 
 def convert_date(date):
@@ -11,6 +22,13 @@ def convert_date(date):
 
     return str(input_time.strftime(output_format))
 
+def day_diff(date1, date2):
+    input_format = '%Y-%m-%d %H:%M:%S'
+    date1_obj = datetime.strptime(date1, input_format)
+    date2_obj = datetime.strptime(date2, input_format)
+
+    delta = date2_obj - date1_obj
+    return delta.days
 
 content = open('offers.csv')
 
@@ -18,7 +36,7 @@ content = open('offers.csv')
 mydb = psycopg2.connect(
     host="localhost",
     user="postgres",
-   password="postgres",
+    password="postgres",
     database="mallorcadb"
 )
 
@@ -32,7 +50,6 @@ offer_id = 0
 
 for i in range(offer_id):
     next(reader)
-
 
 room = {
     "DOUBLE": 0,
@@ -125,7 +142,9 @@ ocean = {
     "true": True
 }
 
-sql = "INSERT INTO offers (offer_id, count_adults, count_children, inbound_departure_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+sql = "INSERT INTO offers (offer_id, count_adults, count_children, inbound_departure_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id, duration) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+sqlSearch1 = "INSERT INTO search_"
+sqlSearch2 = "(offer_id, count_adults, count_children, inbound_departure_date_time, mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id, duration) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 # iterate over each row in the CSV file
 for row in reader:
@@ -140,10 +159,15 @@ for row in reader:
     price = row[5]
     roomtype = room[row[14]]
     hotel_id = row[0]
+    duration = day_diff(outbound_departure_date_time, inbound_departure_date_time)
 
     # execute the SQL query with the values from the current row
     mycursor.execute(sql, (offer_id, count_adults, count_children, inbound_departure_date_time,
-                     mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id))
+                     mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id, duration))
+
+
+    mycursor.execute(sqlSearch1 + str(get_hash_offer(int(count_adults), int(count_children), int(duration))) + sqlSearch2, (offer_id, count_adults, count_children, inbound_departure_date_time,
+                     mealtype, oceanview, outbound_departure_airport, outbound_departure_date_time, price, roomtype, hotel_id, duration))
 
     if offer_id % 200000 == 0:
         mydb.commit()

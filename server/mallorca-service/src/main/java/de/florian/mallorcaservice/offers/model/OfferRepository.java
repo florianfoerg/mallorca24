@@ -22,7 +22,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     @Query("SELECT o FROM Offer o WHERE o.countAdults = :countAdults AND o.countChildren = :countChildren " +
             "AND o.outboundDepartureDateTime >= :outboundDepartureDateTime AND o.inboundDepartureDateTime <= :inboundDepartureDateTime " +
-            "AND FUNCTION('DATE_PART', 'day', o.inboundDepartureDateTime - o.outboundDepartureDateTime) = :duration " +
+            "AND o.duration = :duration " +
             "AND o.hotel.hotelId = :hotelId")
 
     List<Offer> findByArgsAndHotel(
@@ -50,7 +50,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             "AND (:checkMealtype = false OR o.mealtype IN :mealtypes)" +
             "AND (:checkRoomtype = false OR o.roomtype IN :roomtypes)" +
             "AND (:checkOceanview = false OR o.oceanview = :oceanview) " +
-            "AND FUNCTION('DATE_PART', 'day', o.inboundDepartureDateTime - o.outboundDepartureDateTime) = :duration " +
+            "AND o.duration = :duration " +
             "GROUP BY o.hotel.hotelId")
 
     List<MinOfferWrapper> findMinAllArgs(

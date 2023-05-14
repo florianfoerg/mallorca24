@@ -33,4 +33,30 @@ public class FilteredRequest {
         private Boolean oceanview;
         private Integer minStars;
         private Boolean hasPool;
+
+        private static String enumListToString(List<? extends Enum<?>> list ) {
+                if(list == null || list.size() == 0) {
+                        return "( null )";
+                }
+
+                StringBuilder values = new StringBuilder();
+
+                for (Enum<?> i:list) {
+                        values.append(",").append(i.ordinal());
+                }
+
+                return "(" + values.substring(1) + ")";
+        }
+
+        public String getAirportsString() {
+                return enumListToString(departureAirports);
+        }
+
+        public String getMealtypesString() {
+                return enumListToString(mealtypes);
+        }
+
+        public String getRoomtypesString() {
+                return enumListToString(roomtypes);
+        }
 }

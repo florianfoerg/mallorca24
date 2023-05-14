@@ -1,5 +1,6 @@
 package de.florian.mallorcaservice.offers;
 
+import com.google.common.hash.Hashing;
 import de.florian.mallorcaservice.bookings.BookingService;
 import de.florian.mallorcaservice.hotels.model.Hotel;
 import de.florian.mallorcaservice.hotels.model.HotelOverviewDTO;
@@ -8,11 +9,13 @@ import de.florian.mallorcaservice.offers.model.*;
 import de.florian.mallorcaservice.offers.model.mapper.OfferMapper;
 import de.florian.mallorcaservice.requests.FilteredRequest;
 import de.florian.mallorcaservice.requests.RequestFilter;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @AllArgsConstructor
@@ -22,6 +25,10 @@ public class OfferService {
     private OfferRepository offerRepository;
     private HotelRepository hotelRepository;
     private BookingService bookingService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
 
     /**
      * Creates a new offer for the specified hotel and saves it to the repository.
@@ -79,15 +86,26 @@ public class OfferService {
      */
     @Cacheable("offers")    //If a user searches for an offer he/she will with a high probability search it again
     public List<HotelOverviewDTO> getOffersFiltered(final FilteredRequest filters) {
+        final String table = "search_" + getHashOffer(filters);
 
-        List<MinOfferWrapper> offers = offerRepository.findMinAllArgs(filters.getCountAdults(),
-                filters.getCountChildren(), filters.getEarliestPossible(), filters.getLatestPossible(),
-                filters.getFilter().contains(RequestFilter.AIRPORT), filters.getDepartureAirports(),
-                filters.getFilter().contains(RequestFilter.MEALTYPE), filters.getMealtypes(),
-                filters.getFilter().contains(RequestFilter.ROOMTYPE), filters.getRoomtypes(),
-                filters.getFilter().contains(RequestFilter.OCEANVIEW), filters.getOceanview(),
-                filters.getDuration()
-        );
+        final String sqlQuery = "SELECT t.hotel_id as hotelId, MIN(t.price) as minPrice" +
+                " FROM " + table + " t" +
+                " WHERE t.count_adults = " + filters.getCountAdults() +
+                " AND t.count_children = " + filters.getCountChildren() +
+                " AND t.outbound_departure_date_time >= \'" + filters.getEarliestPossible() +
+                "\' AND t.duration = " + filters.getDuration() +
+                " AND t.inbound_departure_date_time <= \'" + filters.getLatestPossible() +
+                "\' AND (" +  filters.getFilter().contains(RequestFilter.AIRPORT)  + " = false OR t.outbound_departure_airport IN " + filters.getAirportsString() + ") " +
+                " AND ( " +  filters.getFilter().contains(RequestFilter.MEALTYPE)  + " = false OR t.mealtype IN " + filters.getMealtypesString() + ") " +
+                " AND (" +  filters.getFilter().contains(RequestFilter.ROOMTYPE)  + " = false OR t.roomtype IN " + filters.getRoomtypesString() + ") " +
+                " AND (" +  filters.getFilter().contains(RequestFilter.OCEANVIEW)  + " = false OR t.oceanview = " + filters.getOceanview() +
+                ") GROUP BY t.hotel_id";
+
+        System.out.println(sqlQuery);
+
+        final Query q = entityManager.createNativeQuery(sqlQuery, "MinOfferWrapperMapping");
+
+        List<MinOfferWrapper> offers = q.getResultList();
 
         List<HotelOverviewDTO> offerOverviews = new ArrayList<>();
 
@@ -124,6 +142,16 @@ public class OfferService {
         List<Offer> offers = offerRepository.findByHotel(hotel);
 
         return offers.stream().sorted(Comparator.comparing(Offer::getPrice)).map(OfferMapper.INSTANCE::offerToOfferDTO).toList();
+    }
+
+    public static Integer getHashOffer(FilteredRequest filteredRequest) {
+        String hashString = Hashing
+                .sha256()
+                .hashBytes(String.valueOf(filteredRequest.getCountAdults() * filteredRequest.getDuration() * (filteredRequest.getCountChildren() + 1)).getBytes(StandardCharsets.UTF_8))
+                .toString()
+                .substring(0, 4);
+        BigInteger hashValue = new BigInteger(hashString, 16);
+        return Math.abs(hashValue.intValue()) % 500;
     }
 
 }
