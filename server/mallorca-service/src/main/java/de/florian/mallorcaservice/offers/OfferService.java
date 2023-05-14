@@ -101,7 +101,6 @@ public class OfferService {
                 " AND (" +  filters.getFilter().contains(RequestFilter.OCEANVIEW)  + " = false OR t.oceanview = " + filters.getOceanview() +
                 ") GROUP BY t.hotel_id";
 
-        System.out.println(sqlQuery);
 
         final Query q = entityManager.createNativeQuery(sqlQuery, "MinOfferWrapperMapping");
 
