@@ -8,7 +8,7 @@ The full description can be found here: https://github.com/check24-scholarships/
 
 ## System Structure
 
-The application is composed of several subsystems, each responsible for managing a different aspect of the platform. The overall structure of the system is illustrated in the following component diagram:
+The application is composed of several subsystems, each responsible for managing a different aspect of the platform. Client-Server pattern is being used for the application. The overall structure of the system is illustrated in the following component diagram:
 
 ![component diagram showing the structure of the system](https://github.com/florianfoerg/mallorca24/blob/master/rsc/structure%20holiday%20challenge.svg)
 
@@ -18,7 +18,9 @@ Provides a responsive user interface. Utilizes data from the `Mallorca-Service`.
 
 ### Backend
 
-- `Mallorca-Service`: Responsible for providing an API to multiple services. Handles queries and modifications related to offers, hotels, and customers. Calls the `Email-Service` for sending confirmation emails. See [Mallorca-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service).
+- `Mallorca-Service`: Responsible for providing an API to multiple services. Handles queries and modifications related to offers, hotels, and customers. Calls the `Email-Service` for sending confirmation emails. 
+    The service implements the MVC pattern: ![MVC pattern overview](https://github.com/florianfoerg/mallorca24/blob/master/rsc/MVC%20Pattern.png). 
+    See [Mallorca-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service).
 
 - `Email-Service`: Responsible for generating booking confirmation PDFs and sending emails to customers and hotels. See [Email-Service](https://github.com/florianfoerg/mallorca24/tree/master/server/mail-service).
 
