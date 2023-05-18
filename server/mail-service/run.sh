@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Read the variables
-email_sender="$EMAIL_SENDER"
-email_password="$EMAIL_PASSWORD"
+email_sender=$1
+email_password=$2
 
 # Sanity checks for the variables
 if [[ -z "$email_sender" ]]; then
@@ -16,8 +16,8 @@ if [[ -z "$email_password" ]]; then
 fi
 
 # Create the .env file with the variables
-echo "EMAIL_SENDER=$email_sender" > .env
-echo "EMAIL_PASSWORD=$email_password" >> .env
+echo "EMAIL_SENDER=\"$email_sender\"" > .env
+echo "EMAIL_PASSWORD=\"$email_password\"" >> .env
 
 # Build the Docker image
 docker build -t mail-server .
