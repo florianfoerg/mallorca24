@@ -75,8 +75,8 @@ Follow the following steps in order to set up backend services:
 
 1) [Main Backend Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/mallorca-service/README.md)
 2) [Mail Service Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/mail-service/README.md)
-3) [Recommendation Service Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/hotel-recommendation-service/README.md)
-4) [Database Initialization](https://github.com/florianfoerg/mallorca24/tree/master/server/setup/README.md)
+3) [Database Initialization](https://github.com/florianfoerg/mallorca24/tree/master/server/setup/README.md)
+4) [Recommendation Service Setup](https://github.com/florianfoerg/mallorca24/tree/master/server/hotel-recommendation-service/README.md)
 
 Finally, use [Frontend Setup](https://github.com/florianfoerg/mallorca24/blob/master/client/frontend/README.md) to set up the frontend services.
 
