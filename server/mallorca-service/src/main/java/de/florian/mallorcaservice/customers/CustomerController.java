@@ -16,11 +16,12 @@ public class CustomerController {
     private CustomerRepository customerRepository;
     private CustomerService customerService;
 
-    @GetMapping(value = "/all")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-        return ResponseEntity.ok(customers);
-    }
+//    Only for debugging. Not allowed due to security reasons.
+//    @GetMapping(value = "/all")
+//    public ResponseEntity<List<Customer>> getAllCustomers() {
+//        List<Customer> customers = customerRepository.findAll();
+//        return ResponseEntity.ok(customers);
+//    }
 
     @PostMapping(value = "/new")
     public ResponseEntity<Void> addNewCustomer(@RequestBody String email) {
