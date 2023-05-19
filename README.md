@@ -80,3 +80,7 @@ Follow the following steps in order to set up backend services:
 
 Finally, use [Frontend Setup](https://github.com/florianfoerg/mallorca24/blob/master/client/frontend/README.md) to set up the frontend services.
 
+## Demo Video
+[![Demo Video](https://img.youtube.com/vi/kYuwdagC9JY/0.jpg)](https://youtu.be/kYuwdagC9JY)
+
+
