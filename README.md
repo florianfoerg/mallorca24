@@ -58,7 +58,7 @@ To optimize loading times, the system incorporates the following strategies:
 1) Leveraging specialized search tables dedicated to storing offers. By employing a hash value computed from count_adults, count_children, and duration, the system intelligently selects the appropriate search table for each query.
 2) Implementing partitioning for the offer table based on hotel_id, ensuring rapid query execution when the hotel is specified. The decision to use PostgreSQL as the DBMS was motivated by its support for partitioning with foreign keys, a feature absent in MySQL.
 3) Employing multiple btrees indexes on the tables to streamline query performance and deliver efficient processing times. These indexes are instrumental in achieving optimal time complexity.
-4) Duration is stored in offer that it only has to be computed once. 
+4) Duration is stored as an attribute in offers-table that it only has to be computed once. 
 
 ## How to Run
 
