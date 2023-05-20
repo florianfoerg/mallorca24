@@ -50,7 +50,7 @@ Provides a responsive user interface. Utilizes data from the `Mallorca-Service`.
 - <span style="color: green; font-weight: bold;">✓</span> Ensure a responsive design that optimizes the website for different screen sizes.
 - <span style="color: green; font-weight: bold;">✓</span> Implement safeguards to process only valid search and booking requests.
 - <span style="color: green; font-weight: bold;">✓</span> Facilitate easy setup with Docker support and setup scripts.
-- <span style="color: green; font-weight: bold;">✓</span> Add HTTPS support.
+- <span style="color: green; font-weight: bold;">✓</span> Add SSL support.
 
 ### Performance Optimization
 To optimize loading times, the system incorporates the following strategies:
